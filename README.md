@@ -32,6 +32,6 @@ DB_PASSWORD=laravel_pass
 ![ER図](free-market02(背景白).png)
 
 ## URL
-・開発環境：http://localhost/admin/contacts
+・開発環境：http://localhost/
 ・phpMyAdmin : http://localhost:8080/
 
