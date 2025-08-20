@@ -29,7 +29,7 @@ DB_PASSWORD=laravel_pass
 ・MySQL8.2.27
 
 ## ER図
-![ER図](　　.png)
+![ER図](free-market02(背景白).png)
 
 ## URL
 ・開発環境：http://localhost/admin/contacts
