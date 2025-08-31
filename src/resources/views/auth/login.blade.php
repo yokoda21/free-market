@@ -26,7 +26,7 @@
             <div class="auth-form__heading">
                 <h2>ログイン</h2>
             </div>
-            <form class="form" action="{{ route('login') }}" method="post">
+            <form class="form" action="{{ route('login.custom') }}" method="post">
                 @csrf
                 <div class="form__group">
                     <div class="form__group-title">

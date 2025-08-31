@@ -66,48 +66,60 @@ class ItemController extends Controller
         }
 
         $items = $query->latest()->paginate(20)->withQueryString();
+        // 各商品にユーザーのいいね状態を追加
+        if (Auth::check()) {
+            $items->getCollection()->transform(function ($item) {
+                $item->is_liked_by_user = $item->likes->where('user_id', Auth::id())->count() > 0;
+                return $item;
+            });
+        }
 
         return view('items.index', compact('items'));
     }
 
     /**
      * 商品詳細表示
-     * FN017: 商品詳細情報取得
-     * FN018: いいね機能
+     * PG05: /item/{item_id}
      * 
      * @param Item $item
      * @return \Illuminate\View\View
      */
-    public function show(Item $item)
+    public function show($id)
     {
-        // 関連データを事前ロード
-        $item->load([
-            'user.profile',
-            'condition',
-            'categories',
-            'comments.user.profile',
-            'likes'
-        ]);
+        // 商品情報を取得（リレーション含む）
+        $item = Item::with([
+            'user',           // 出品者情報
+            'categories',     // カテゴリー情報
+            'condition',      // 商品状態
+            'comments.user',  // コメントと投稿者情報
+            'likes',          // いいね情報
+            'purchase'        // 購入情報
+        ])->findOrFail($id);
 
-        // いいね数とログインユーザーのいいね状態
-        $likesCount = $item->likes->count();
+        // 現在のユーザーがいいねしているかチェック
         $isLiked = false;
+        $likesCount = $item->likes->count();
+
         if (Auth::check()) {
-            $isLiked = $item->isLikedBy(Auth::id());
+            $isLiked = $item->likes->where('user_id', Auth::id())->count() > 0;
         }
 
-        // コメント数
-        $commentsCount = $item->comments->count();
+        // 購入済みかチェック
+        $isPurchased = $item->purchase !== null;
 
-        // 購入情報（販売済みの場合）
-        $purchase = $item->purchase;
+        // 自分の商品かチェック
+        $isOwnItem = Auth::check() && $item->user_id === Auth::id();
+
+        // コメント数を取得
+        $commentsCount = $item->comments->count();
 
         return view('items.show', compact(
             'item',
-            'likesCount',
             'isLiked',
-            'commentsCount',
-            'purchase'
+            'likesCount',
+            'isPurchased',
+            'isOwnItem',
+            'commentsCount'
         ));
     }
 
@@ -186,31 +198,42 @@ class ItemController extends Controller
     {
         // ログインユーザーのみ
         if (!Auth::check()) {
-            if (request()->ajax()) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'ログインが必要です。'
-                ], 401);
-            }
-            return redirect()->route('login');
+            return response()->json([
+                'success' => false,
+                'message' => 'ログインが必要です。'
+            ], 401);
         }
 
-        $result = Like::toggle(Auth::id(), $item->id);
+        $userId = Auth::id();
 
-        // いいね数を再取得
+        $existingLike = Like::where('user_id', $userId)
+            ->where('item_id', $item->id)
+            ->first();
+
+        if ($existingLike) {
+            $existingLike->delete();
+            $action = 'removed';
+        } else {
+            Like::create([
+                'user_id' => $userId,
+                'item_id' => $item->id
+            ]);
+            $action = 'added';
+        }
+
         $likesCount = $item->fresh()->likes()->count();
 
-        if (request()->ajax()) {
-            return response()->json([
-                'success' => true,
-                'action' => $result['action'],
-                'likes_count' => $likesCount,
-                'is_liked' => $result['action'] === 'added'
-            ]);
-        }
-
-        return redirect()->back();
+        return response()->json([
+            'success' => true,
+            'action' => $action,
+            'likes_count' => $likesCount,
+            'is_liked' => $action === 'added'
+        ]);
     }
+
+
+
+
 
     /**
      * コメント投稿

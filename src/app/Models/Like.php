@@ -49,8 +49,8 @@ class Like extends Model
     public static function exists($userId, $itemId)
     {
         return static::where('user_id', $userId)
-                     ->where('item_id', $itemId)
-                     ->exists();
+            ->where('item_id', $itemId)
+            ->exists();
     }
 
     /**
@@ -62,19 +62,23 @@ class Like extends Model
      */
     public static function toggle($userId, $itemId)
     {
-        $like = static::where('user_id', $userId)
-                     ->where('item_id', $itemId)
-                     ->first();
+        $like = self::where('user_id', $userId)
+            ->where('item_id', $itemId)
+            ->first();
 
         if ($like) {
+            // いいね解除
             $like->delete();
-            return ['action' => 'removed', 'like' => null];
+            return ['action' => 'removed'];
         } else {
-            $newLike = static::create([
+            // いいね追加
+            self::create([
                 'user_id' => $userId,
-                'item_id' => $itemId,
+                'item_id' => $itemId
             ]);
-            return ['action' => 'added', 'like' => $newLike];
+            return ['action' => 'added'];
         }
     }
 }
+
+

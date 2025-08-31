@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>coachtechフリマ</title>
     <link rel="stylesheet" href="{{ asset('css/sanitize.css') }}">
     <link rel="stylesheet" href="{{ asset('css/common.css') }}">
@@ -20,10 +21,13 @@
                 </a>
             </div>
             <div class="header__nav">
-                <form class="search-form" action="{{ route('items.search') }}" method="GET">
+                <form class="search-form" action="{{ route('items.index') }}" method="GET">
                     <div class="search-form__item">
-                        <input class="search-form__item-input" type="text" name="keyword" placeholder="なにをお探しですか？" value="{{ request('keyword') }}">
+                        <input class="search-form__item-input" type="text" name="search" placeholder="なにをお探しですか？" value="{{ request('search') }}">
                     </div>
+                    @if(request('tab'))
+                    <input type="hidden" name="tab" value="{{ request('tab') }}">
+                    @endif
                 </form>
                 <nav>
                     <ul class="header-nav">
@@ -68,8 +72,8 @@
             </div>
 
             <div class="item-index__heading">
-                @if(request('keyword'))
-                <h2>「{{ request('keyword') }}」の検索結果</h2>
+                @if(request('search'))
+                <h2>「{{ request('search') }}」の検索結果</h2>
                 @elseif(request('tab') == 'mylist')
                 <h2>マイリスト</h2>
                 @else
@@ -101,7 +105,7 @@
                         @auth
                         <form class="like-form" data-item-id="{{ $item->id }}">
                             @csrf
-                            <button type="button" class="like-btn {{ $item->userLikes->count() > 0 ? 'like-btn--active' : '' }}">
+                            <button type="button" class="like-btn {{ ($item->is_liked_by_user ?? false) ? 'like-btn--active' : '' }}">
                                 <span class="like-icon">♥</span>
                                 <span class="like-count">{{ $item->likes->count() }}</span>
                             </button>
@@ -112,29 +116,30 @@
                             <span class="like-count">{{ $item->likes->count() }}</span>
                         </div>
                         @endauth
-                        <div class="comment-count">
-                            <span class="comment-icon">💬</span>
-                            <span class="comment-count-number">{{ $item->comments->count() }}</span>
-                        </div>
+                    </div>
+                    <div class="comment-count">
+                        <span class="comment-icon">💬</span>
+                        <span class="comment-count-number">{{ $item->comments->count() }}</span>
                     </div>
                 </div>
-                @endforeach
             </div>
+            @endforeach
+        </div>
+        @else
+        <div class="no-items">
+            @if(request('search'))
+            <p>検索結果が見つかりませんでした。</p>
+            @elseif(request('tab') == 'mylist')
+            @auth
+            <p>まだいいねした商品がありません。</p>
             @else
-            <div class="no-items">
-                @if(request('keyword'))
-                <p>検索結果が見つかりませんでした。</p>
-                @elseif(request('tab') == 'mylist')
-                @auth
-                <p>まだいいねした商品がありません。</p>
-                @else
-                <p>ログインしてマイリストを確認してください。</p>
-                @endauth
-                @else
-                <p>商品がまだ登録されていません。</p>
-                @endif
-            </div>
+            <p>ログインしてマイリストを確認してください。</p>
+            @endauth
+            @else
+            <p>商品がまだ登録されていません。</p>
             @endif
+        </div>
+        @endif
         </div>
     </main>
 
@@ -159,7 +164,7 @@
                         if (data.success) {
                             // いいね状態の切り替え
                             this.classList.toggle('like-btn--active');
-                            likeCount.textContent = data.like_count;
+                            likeCount.textContent = data.likes_count;
                         } else {
                             // エラー処理
                             if (data.message) {
