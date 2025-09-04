@@ -10,6 +10,7 @@ use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+//use App\Http\Requests\ExhibitionRequest;
 
 /**
  * 商品コントローラー
@@ -138,6 +139,12 @@ class ItemController extends Controller
 
         $categories = Category::orderBy('name')->get();
         $conditions = Condition::orderBy('id')->get();
+        \Log::info('データ取得完了', [
+            'categories_count' => $categories->count(),
+            'conditions_count' => $conditions->count()
+        ]);
+
+
 
         return view('items.create', compact('categories', 'conditions'));
     }
@@ -152,39 +159,76 @@ class ItemController extends Controller
      */
     public function store(\App\Http\Requests\ExhibitionRequest $request)
     {
-        // 未認証の場合はログイン画面にリダイレクト
+        \Log::info('=== ExhibitionRequest使用版 ===');
+        \Log::info('認証状況:', ['authenticated' => Auth::check(), 'user_id' => Auth::id()]);
+
         if (!Auth::check()) {
             return redirect()->route('login');
         }
 
-        $validated = $request->validated();
+        try {
+            $validated = $request->validated();
+            \Log::info('ExhibitionRequestバリデーション成功:', $validated);
 
-        // 画像アップロード（Laravelのstorageディレクトリに保存）
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('items', 'public');
+            // 画像アップロード処理の詳細ログ
+            $imagePath = null;
+            if ($request->hasFile('image')) {
+                \Log::info('=== 画像アップロード開始 ===');
+                \Log::info('画像ファイル情報:', [
+                    'name' => $request->file('image')->getClientOriginalName(),
+                    'size' => $request->file('image')->getSize(),
+                    'mime' => $request->file('image')->getMimeType(),
+                    'tmp_path' => $request->file('image')->getRealPath()
+                ]);
+
+                try {
+                    $imagePath = $request->file('image')->store('items', 'public');
+                    \Log::info('画像保存成功: ' . $imagePath);
+
+                    // 実際にファイルが存在するか確認
+                    $fullPath = storage_path('app/public/' . $imagePath);
+                    \Log::info('保存先フルパス: ' . $fullPath);
+                    \Log::info('ファイル存在確認: ' . (file_exists($fullPath) ? 'YES' : 'NO'));
+                } catch (\Exception $e) {
+                    \Log::error('画像保存エラー: ' . $e->getMessage());
+                    \Log::error('画像保存エラー詳細: ' . $e->getTraceAsString());
+                    throw $e;
+                }
+            } else {
+                \Log::warning('画像ファイルが受信されていません');
+            }
+
+            // 商品作成
+            $item = Item::create([
+                'user_id' => Auth::id(),
+                'name' => $validated['name'],
+                'description' => $validated['description'],
+                'price' => $validated['price'],
+                'brand' => $validated['brand'] ?? null,
+                'condition_id' => $validated['condition_id'],
+                'image_url' => $imagePath,
+                'is_sold' => false,
+            ]);
+
+            \Log::info('商品作成完了:', ['item_id' => $item->id, 'image_url' => $imagePath]);
+
+            // カテゴリー関連付け
+            if (!empty($validated['category_ids'])) {
+                $item->categories()->attach($validated['category_ids']);
+                \Log::info('カテゴリー関連付け完了:', ['category_ids' => $validated['category_ids']]);
+            }
+
+            return redirect()
+                ->route('items.index')
+                ->with('success', '商品を出品しました');
+        } catch (\Exception $e) {
+            \Log::error('商品出品処理エラー:', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return redirect()->back()->withInput()->with('error', 'エラー: ' . $e->getMessage());
         }
-
-        // 商品作成
-        $item = Item::create([
-            'user_id' => Auth::id(),
-            'name' => $validated['name'],
-            'description' => $validated['description'],
-            'price' => $validated['price'],
-            'brand' => $validated['brand'] ?? null,
-            'condition_id' => $validated['condition_id'],
-            'image_url' => $imagePath,
-            'is_sold' => false,
-        ]);
-
-        // カテゴリ関連付け（複数選択可能）
-        $item->categories()->attach($validated['category_ids']);
-
-        return redirect()
-            ->route('items.show', $item)
-            ->with('success', '商品を出品しました。');
     }
-
     /**
      * いいね機能
      * FN018: いいね機能

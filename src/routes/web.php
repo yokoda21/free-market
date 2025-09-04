@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PurchaseController;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +41,9 @@ Route::middleware(['auth'])->group(function () {
     // 商品出品(PG08)
     Route::get('/sell', [ItemController::class, 'create'])->name('items.create');
     Route::post('/sell', [ItemController::class, 'store'])->name('items.store');
+
+    
+    
 
     // いいね機能（Ajax対応）
     Route::post('/items/{item}/like', [ItemController::class, 'toggleLike'])
@@ -108,9 +112,10 @@ Route::post('/register', [UserController::class, 'register'])->name('register.cu
 Route::post('/login', [UserController::class, 'login'])->name('login.custom');
 
 // ===== エラーページルート =====
-Route::fallback(function () {
+/*Route::fallback(function () {
     return view('errors.404');
-});
+});動作確認のため2025年9月1日一時コメントアウト
+*/
 
 /*
 |--------------------------------------------------------------------------

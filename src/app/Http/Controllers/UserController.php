@@ -97,21 +97,21 @@ class UserController extends Controller
     public function profile(Request $request)
     {
         $user = Auth::user();
-        $tab = $request->query('tab', 'sell'); // デフォルトは出品した商品
+        $page = $request->query('page', 'sell'); // デフォルトは出品した商品
 
-        if ($tab === 'sell') {
+        if ($page === 'sell') {
             // 出品した商品を取得
             $items = Item::where('user_id', $user->id)
                 ->orderBy('created_at', 'desc')
                 ->get();
-        } else if ($tab === 'buy') {
+        } else if ($page === 'buy') {
             // 購入した商品を取得
             $items = Item::whereHas('purchase', function ($query) use ($user) {
                 $query->where('user_id', $user->id);
             })->orderBy('created_at', 'desc')->get();
         }
 
-        return view('user.profile', compact('user', 'items', 'tab'));
+        return view('user.profile', compact('user', 'items', 'page'));
     }
 
     /**
