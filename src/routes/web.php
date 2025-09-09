@@ -75,8 +75,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/mypage', [UserController::class, 'profile'])->name('user.profile');
 
     // プロフィール編集
-    Route::get('/mypage/profile', [UserController::class, 'editProfile'])->name('user.profile.edit');
-    Route::post('/mypage/profile', [UserController::class, 'updateProfile'])->name('user.profile.update');
+    Route::get('/mypage/profile', [UserController::class, 'editProfile'])->name('user.edit-profile');
+    Route::post('/mypage/profile', [UserController::class, 'updateProfile'])->name('user.update-profile');
 
     // プロフィール画像アップロード（Ajax対応）
     Route::post('/mypage/profile/image', [UserController::class, 'uploadProfileImage'])->name('user.profile.image');

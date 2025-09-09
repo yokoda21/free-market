@@ -10,7 +10,7 @@
     </div>
 
     <div class="edit-profile-form-container">
-        <form action="{{ route('user.profile.update') }}" method="POST" enctype="multipart/form-data" class="edit-profile-form">
+        <form action="{{ route('user.update-profile') }}" method="POST" enctype="multipart/form-data" class="edit-profile-form">
             @csrf
 
             <!-- プロフィール画像 -->
@@ -19,7 +19,7 @@
                 <div class="profile-image-upload">
                     <div class="current-image">
                         @if($profile && $profile->profile_image)
-                        <img src="{{ Storage::url($profile->profile_image) }}" alt="現在のプロフィール画像" id="preview-image" class="profile-preview">
+                        <img src="{{ asset('storage/' . $profile->profile_image) }}" alt="現在のプロフィール画像" id="preview-image" class="profile-preview">
                         @else
                         <div class="no-image-placeholder" id="preview-image">
                             <i class="icon-camera"></i>

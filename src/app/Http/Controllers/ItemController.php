@@ -10,7 +10,6 @@ use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-//use App\Http\Requests\ExhibitionRequest;
 
 /**
  * 商品コントローラー
@@ -67,6 +66,7 @@ class ItemController extends Controller
         }
 
         $items = $query->latest()->paginate(20)->withQueryString();
+
         // 各商品にユーザーのいいね状態を追加
         if (Auth::check()) {
             $items->getCollection()->transform(function ($item) {
@@ -82,7 +82,7 @@ class ItemController extends Controller
      * 商品詳細表示
      * PG05: /item/{item_id}
      * 
-     * @param Item $item
+     * @param int $id
      * @return \Illuminate\View\View
      */
     public function show($id)
@@ -139,12 +139,6 @@ class ItemController extends Controller
 
         $categories = Category::orderBy('name')->get();
         $conditions = Condition::orderBy('id')->get();
-        \Log::info('データ取得完了', [
-            'categories_count' => $categories->count(),
-            'conditions_count' => $conditions->count()
-        ]);
-
-
 
         return view('items.create', compact('categories', 'conditions'));
     }
@@ -159,43 +153,17 @@ class ItemController extends Controller
      */
     public function store(\App\Http\Requests\ExhibitionRequest $request)
     {
-        \Log::info('=== ExhibitionRequest使用版 ===');
-        \Log::info('認証状況:', ['authenticated' => Auth::check(), 'user_id' => Auth::id()]);
-
         if (!Auth::check()) {
             return redirect()->route('login');
         }
 
         try {
             $validated = $request->validated();
-            \Log::info('ExhibitionRequestバリデーション成功:', $validated);
 
-            // 画像アップロード処理の詳細ログ
+            // 画像アップロード処理
             $imagePath = null;
             if ($request->hasFile('image')) {
-                \Log::info('=== 画像アップロード開始 ===');
-                \Log::info('画像ファイル情報:', [
-                    'name' => $request->file('image')->getClientOriginalName(),
-                    'size' => $request->file('image')->getSize(),
-                    'mime' => $request->file('image')->getMimeType(),
-                    'tmp_path' => $request->file('image')->getRealPath()
-                ]);
-
-                try {
-                    $imagePath = $request->file('image')->store('items', 'public');
-                    \Log::info('画像保存成功: ' . $imagePath);
-
-                    // 実際にファイルが存在するか確認
-                    $fullPath = storage_path('app/public/' . $imagePath);
-                    \Log::info('保存先フルパス: ' . $fullPath);
-                    \Log::info('ファイル存在確認: ' . (file_exists($fullPath) ? 'YES' : 'NO'));
-                } catch (\Exception $e) {
-                    \Log::error('画像保存エラー: ' . $e->getMessage());
-                    \Log::error('画像保存エラー詳細: ' . $e->getTraceAsString());
-                    throw $e;
-                }
-            } else {
-                \Log::warning('画像ファイルが受信されていません');
+                $imagePath = $request->file('image')->store('items', 'public');
             }
 
             // 商品作成
@@ -210,23 +178,27 @@ class ItemController extends Controller
                 'is_sold' => false,
             ]);
 
-            \Log::info('商品作成完了:', ['item_id' => $item->id, 'image_url' => $imagePath]);
-
             // カテゴリー関連付け
             if (!empty($validated['category_ids'])) {
                 $item->categories()->attach($validated['category_ids']);
-                \Log::info('カテゴリー関連付け完了:', ['category_ids' => $validated['category_ids']]);
             }
 
             return redirect()
                 ->route('items.index')
                 ->with('success', '商品を出品しました');
         } catch (\Exception $e) {
-            \Log::error('商品出品処理エラー:', [
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ]);
-            return redirect()->back()->withInput()->with('error', 'エラー: ' . $e->getMessage());
+            // バリデーションエラー時に画像データを保持するための処理
+            $redirectBack = redirect()->back()->withInput();
+
+            // 画像がアップロードされていた場合、プレビュー用にBase64データを保持
+            if ($request->hasFile('image')) {
+                $imageData = base64_encode(file_get_contents($request->file('image')->getRealPath()));
+                $mimeType = $request->file('image')->getMimeType();
+                $base64Image = 'data:' . $mimeType . ';base64,' . $imageData;
+                $redirectBack = $redirectBack->withInput(['existing_image' => $base64Image]);
+            }
+
+            return $redirectBack->with('error', '商品の出品に失敗しました。');
         }
     }
     /**
@@ -236,7 +208,7 @@ class ItemController extends Controller
      * - 再度いいねアイコンを押下することによって、いいねを解除
      *
      * @param Item $item
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\JsonResponse
      */
     public function toggleLike(Item $item)
     {
@@ -274,10 +246,6 @@ class ItemController extends Controller
             'is_liked' => $action === 'added'
         ]);
     }
-
-
-
-
 
     /**
      * コメント投稿

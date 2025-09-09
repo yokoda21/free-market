@@ -92,25 +92,36 @@ class UserController extends Controller
 
     /**
      * マイページ表示
-     * 出品した商品・購入した商品のタブ表示
+     * PG09: /mypage (出品商品がデフォルト)
+     * PG11: /mypage?page=buy (購入した商品一覧)
+     * PG12: /mypage?page=sell (出品した商品一覧)
      */
     public function profile(Request $request)
     {
         $user = Auth::user();
-        $page = $request->query('page', 'sell'); // デフォルトは出品した商品
+        $page = $request->query('page', 'sell'); // 模擬案件仕様：pageパラメータ、デフォルトは出品商品
 
         if ($page === 'sell') {
-            // 出品した商品を取得
+            // PG12: 出品した商品を取得
             $items = Item::where('user_id', $user->id)
                 ->orderBy('created_at', 'desc')
                 ->get();
-        } else if ($page === 'buy') {
-            // 購入した商品を取得
+        } elseif ($page === 'buy') {
+            // PG11: 購入した商品を取得
             $items = Item::whereHas('purchase', function ($query) use ($user) {
                 $query->where('user_id', $user->id);
-            })->orderBy('created_at', 'desc')->get();
+            })->with('purchase') // 購入情報も一緒に取得
+                ->orderBy('created_at', 'desc')
+                ->get();
+        } else {
+            // 不正なパラメータの場合は出品商品を表示
+            $items = Item::where('user_id', $user->id)
+                ->orderBy('created_at', 'desc')
+                ->get();
+            $page = 'sell';
         }
 
+        // ビューに渡すデータ：user, items, page（tabではなくpage）
         return view('user.profile', compact('user', 'items', 'page'));
     }
 

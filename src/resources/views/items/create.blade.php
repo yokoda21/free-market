@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>商品出品 - coachtech フリマ</title>
-    <!-- テストのためCSS無効
+
     <link rel="stylesheet" href="{{ asset('css/sanitize.css') }}">
     <link rel="stylesheet" href="{{ asset('css/common.css') }}">
     <link rel="stylesheet" href="{{ asset('css/create.css') }}">
-    -->
+
 </head>
 
 <body>
@@ -19,9 +19,7 @@
         <header class="header">
             <div class="header-content">
                 <a href="/" class="logo">
-                    <!-- テストのため一時的にロゴ無効
                     <img src="{{ asset('images/logo.svg') }}" alt="coachtech">
-                    -->
                 </a>
 
                 <div class="header-actions">
@@ -63,7 +61,7 @@
                     </div>
 
                     <!-- 出品フォーム -->
-                    <form class="create-form" action="{{ route('items.store') }}" method="POST" enctype="multipart/form-data">
+                    <form class="create-form" action="{{ route('items.store') }}" method="POST" enctype="multipart/form-data" novalidate>
                         @csrf
 
                         <!-- 商品画像アップロード -->
@@ -71,23 +69,25 @@
                             <h3>商品画像</h3>
                             <div class="form-group">
                                 <div class="image-upload-area" id="imageUploadArea">
-                                    <input type="file" name="image" id="imageInput" accept="image/*" required>
-                                    <div class="upload-placeholder" id="uploadPlaceholder">
+                                    <input type="file" name="image" id="imageInput" accept="image/*">
+                                    <!-- 保持された画像があれば非表示 -->
+                                    <input type="hidden" name="existing_image" id="existingImagePath" value="{{ old('existing_image') }}">
+
+                                    <div class="upload-placeholder" id="uploadPlaceholder" style="{{ old('existing_image') ? 'display: none;' : '' }}">
                                         <div class="upload-icon">📷</div>
                                         <p>画像をアップロード</p>
-                                        <p class="upload-note">JPG, PNG, GIF (最大10MB)</p>
+                                        <p class="upload-note">JPEG, PNG, (最大4MB)</p>
                                     </div>
-                                    <div class="image-preview" id="imagePreview" style="display: none;">
-                                        <img id="previewImage" src="" alt="プレビュー">
+                                    <div class="image-preview" id="imagePreview" style="{{ old('existing_image') ? 'display: block;' : 'display: none;' }}">
+                                        <img id="previewImage" src="{{ old('existing_image') ? old('existing_image') : '' }}" alt="プレビュー">
                                         <button type="button" class="remove-image" id="removeImage">削除</button>
                                     </div>
                                 </div>
-                                @error('image')
-                                <span class="error-message">{{ $message }}</span>
-                                @enderror
+                                @if($errors->has('image') && old('_token'))
+                                <span class="error-message">{{ $errors->first('image') }}</span>
+                                @endif
                             </div>
                         </div>
-
 
                         <!-- 商品の詳細 -->
                         <div class="form-section">
@@ -107,15 +107,15 @@
                                     </label>
                                     @endforeach
                                 </div>
-                                @error('category_ids')
-                                <span class="error-message">{{ $message }}</span>
-                                @enderror
+                                @if($errors->has('category_ids') && old('_token'))
+                                <span class="error-message">{{ $errors->first('category_ids') }}</span>
+                                @endif
                             </div>
 
                             <!-- 商品の状態 -->
                             <div class="form-group">
                                 <label for="condition_id" class="required">商品の状態</label>
-                                <select name="condition_id" id="condition_id" required>
+                                <select name="condition_id" id="condition_id">
                                     <option value="">選択してください</option>
                                     @foreach($conditions as $condition)
                                     <option value="{{ $condition->id }}"
@@ -124,9 +124,9 @@
                                     </option>
                                     @endforeach
                                 </select>
-                                @error('condition_id')
-                                <span class="error-message">{{ $message }}</span>
-                                @enderror
+                                @if($errors->has('condition_id') && old('_token'))
+                                <span class="error-message">{{ $errors->first('condition_id') }}</span>
+                                @endif
                             </div>
                         </div>
 
@@ -142,13 +142,11 @@
                                     name="name"
                                     id="name"
                                     placeholder="商品名を入力してください"
-                                    value="{{ old('name') }}"
-                                    maxlength="255"
-                                    required>
+                                    value="{{ old('name') }}">
                                 <span class="input-note">商品名は255文字以内で入力してください</span>
-                                @error('name')
-                                <span class="error-message">{{ $message }}</span>
-                                @enderror
+                                @if($errors->has('name') && old('_token'))
+                                <span class="error-message">{{ $errors->first('name') }}</span>
+                                @endif
                             </div>
 
                             <!-- 商品の説明 -->
@@ -158,16 +156,14 @@
                                     name="description"
                                     id="description"
                                     rows="6"
-                                    placeholder="色、材質、注意点など、商品の詳細を記入してください"
-                                    maxlength="255"
-                                    required>{{ old('description') }}</textarea>
+                                    placeholder="色、材質、注意点など、商品の詳細を記入してください">{{ old('description') }}</textarea>
                                 <span class="input-note">商品説明は255文字以内で入力してください</span>
                                 <div class="char-count">
-                                    <span id="descriptionCount">0</span>/255文字
+                                    <span id="descriptionCount">{{ old('description') ? strlen(old('description')) : 0 }}</span>/255文字
                                 </div>
-                                @error('description')
-                                <span class="error-message">{{ $message }}</span>
-                                @enderror
+                                @if($errors->has('description') && old('_token'))
+                                <span class="error-message">{{ $errors->first('description') }}</span>
+                                @endif
                             </div>
 
                             <!-- ブランド名 -->
@@ -178,12 +174,11 @@
                                     name="brand"
                                     id="brand"
                                     placeholder="ブランド名（任意）"
-                                    value="{{ old('brand') }}"
-                                    maxlength="100">
+                                    value="{{ old('brand') }}">
                                 <span class="input-note">ブランド名は100文字以内で入力してください（任意）</span>
-                                @error('brand')
-                                <span class="error-message">{{ $message }}</span>
-                                @enderror
+                                @if($errors->has('brand') && old('_token'))
+                                <span class="error-message">{{ $errors->first('brand') }}</span>
+                                @endif
                             </div>
                         </div>
 
@@ -202,13 +197,12 @@
                                         placeholder="0"
                                         value="{{ old('price') }}"
                                         min="0"
-                                        max="9999999"
-                                        required>
+                                        max="9999999">
                                 </div>
                                 <span class="input-note">0円以上、9,999,999円以下で入力してください</span>
-                                @error('price')
-                                <span class="error-message">{{ $message }}</span>
-                                @enderror
+                                @if($errors->has('price') && old('_token'))
+                                <span class="error-message">{{ $errors->first('price') }}</span>
+                                @endif
                             </div>
                         </div>
 
@@ -224,7 +218,6 @@
     </div>
 
     <!-- JavaScript -->
-
     <script>
         // 画像アップロード機能
         const imageInput = document.getElementById('imageInput');
@@ -233,6 +226,7 @@
         const previewImage = document.getElementById('previewImage');
         const removeImageBtn = document.getElementById('removeImage');
         const uploadArea = document.getElementById('imageUploadArea');
+        const existingImagePath = document.getElementById('existingImagePath');
 
         // ファイル選択時の処理
         imageInput.addEventListener('change', function(e) {
@@ -251,6 +245,8 @@
                     previewImage.src = e.target.result;
                     uploadPlaceholder.style.display = 'none';
                     imagePreview.style.display = 'block';
+                    // 新しい画像を選択したので既存画像パスをクリア
+                    existingImagePath.value = '';
                 };
                 reader.readAsDataURL(file);
             }
@@ -262,6 +258,7 @@
             previewImage.src = '';
             uploadPlaceholder.style.display = 'block';
             imagePreview.style.display = 'none';
+            existingImagePath.value = '';
         });
 
         // ドラッグ&ドロップ機能
@@ -294,7 +291,7 @@
             const length = descriptionTextarea.value.length;
             descriptionCount.textContent = length;
 
-            if (length > 1000) {
+            if (length > 255) {
                 descriptionCount.style.color = '#ff4444';
             } else {
                 descriptionCount.style.color = '#666';
@@ -303,30 +300,6 @@
 
         descriptionTextarea.addEventListener('input', updateCharCount);
         updateCharCount(); // 初期表示
-
-        // フォーム送信時の確認
-        const createForm = document.querySelector('.create-form');
-        createForm.addEventListener('submit', function(e) {
-            // カテゴリー選択チェック
-            const categoryChecked = document.querySelectorAll('input[name="category_ids[]"]:checked').length > 0;
-            if (!categoryChecked) {
-                e.preventDefault();
-                alert('カテゴリーを1つ以上選択してください。');
-                return;
-            }
-
-            // 画像ファイルチェック
-            if (!imageInput.files || imageInput.files.length === 0) {
-                e.preventDefault();
-                alert('商品画像をアップロードしてください。');
-                return;
-            }
-
-            const confirmed = confirm('この内容で出品しますか？');
-            if (!confirmed) {
-                e.preventDefault();
-            }
-        });
 
         // フラッシュメッセージの自動消去
         const flashMessages = document.querySelectorAll('.flash-message');
@@ -343,6 +316,15 @@
             // 負の数を除去
             if (value < 0) {
                 e.target.value = 0;
+            }
+        });
+
+        // フォーム送信前の画像データ保存
+        const createForm = document.querySelector('.create-form');
+        createForm.addEventListener('submit', function(e) {
+            // 現在プレビューされている画像がある場合、Base64データを保存
+            if (previewImage.src && previewImage.src.startsWith('data:')) {
+                existingImagePath.value = previewImage.src;
             }
         });
     </script>
