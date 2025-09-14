@@ -10,7 +10,7 @@
     </div>
 
     <div class="edit-profile-form-container">
-        <form action="{{ route('user.update-profile') }}" method="POST" enctype="multipart/form-data" class="edit-profile-form">
+        <form action="{{ route('user.update-profile') }}" method="POST" enctype="multipart/form-data" class="edit-profile-form" novalidate>
             @csrf
 
             <!-- プロフィール画像 -->
@@ -42,7 +42,7 @@
             <div class="form-group">
                 <label for="name" class="form-label">ユーザー名</label>
                 <input type="text" id="name" name="name" value="{{ old('name', $user->name) }}"
-                    class="form-input @error('name') error @enderror" maxlength="20" required>
+                    class="form-input @error('name') error @enderror">
                 @error('name')
                 <p class="error-message">{{ $message }}</p>
                 @enderror
@@ -53,9 +53,7 @@
                 <label for="postal_code" class="form-label">郵便番号</label>
                 <input type="text" id="postal_code" name="postal_code"
                     value="{{ old('postal_code', $profile ? $profile->postal_code : '') }}"
-                    class="form-input @error('postal_code') error @enderror"
-                    placeholder="123-4567" pattern="\d{3}-\d{4}" required>
-                <p class="input-note">ハイフンを含めて入力してください（例：123-4567）</p>
+                    class="form-input @error('postal_code') error @enderror" autocomplete="off">                
                 @error('postal_code')
                 <p class="error-message">{{ $message }}</p>
                 @enderror
@@ -66,8 +64,7 @@
                 <label for="address" class="form-label">住所</label>
                 <input type="text" id="address" name="address"
                     value="{{ old('address', $profile ? $profile->address : '') }}"
-                    class="form-input @error('address') error @enderror"
-                    placeholder="東京都渋谷区千駄ヶ谷1-2-3" required>
+                    class="form-input @error('address') error @enderror">
                 @error('address')
                 <p class="error-message">{{ $message }}</p>
                 @enderror
@@ -78,8 +75,7 @@
                 <label for="building" class="form-label">建物名</label>
                 <input type="text" id="building" name="building"
                     value="{{ old('building', $profile ? $profile->building : '') }}"
-                    class="form-input @error('building') error @enderror"
-                    placeholder="○○マンション101号室（任意）">
+                    class="form-input @error('building') error @enderror">
                 <p class="input-note">任意項目です</p>
                 @error('building')
                 <p class="error-message">{{ $message }}</p>
@@ -131,17 +127,6 @@
         e.target.value = value;
     });
 
-    // フォームバリデーション
-    document.querySelector('.edit-profile-form').addEventListener('submit', function(e) {
-        const postalCode = document.getElementById('postal_code').value;
-        const postalCodePattern = /^\d{3}-\d{4}$/;
 
-        if (!postalCodePattern.test(postalCode)) {
-            e.preventDefault();
-            alert('郵便番号は123-4567の形式で入力してください');
-            document.getElementById('postal_code').focus();
-            return false;
-        }
-    });
 </script>
 @endsection

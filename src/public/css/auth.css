@@ -1,0 +1,189 @@
+/* ==========================================================================
+   認証画面専用CSS - auth.css
+   ========================================================================== */
+
+/* 認証画面専用ヘッダー */
+.auth-header {
+    width: 100%;
+    height: 82px;
+    background-color: #000000;
+    position: relative;
+}
+
+.auth-header__inner {
+    position: relative;
+    width: 100%;
+    max-width: 1512px;
+    height: 100%;
+    margin: 0 ;
+    display: flex;
+    align-items: center;
+}
+
+.auth-header__logo {
+    position: absolute;
+    top: 22px;
+    left: 40px;
+    width: 370px;
+    height: 36px;
+}
+
+.auth-header__logo-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;    
+}
+
+.auth-header__logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* メインコンテンツ */
+.auth-main {
+    min-height: calc(100vh - 80px);
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* 認証コンテンツエリア */
+.auth__content {
+    width: 680px;
+    height: auto;
+    min-height: 678px;
+    background-color: #ffffff;
+    padding: 60px 80px;
+    position: relative;
+}
+
+/* ヘッダー */
+.auth-form__heading {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.auth-form__heading h2 {
+    font-size: 32px;
+    font-weight: 600;
+    color: #333333;
+    margin: 0;
+}
+
+/* フォーム */
+.form {
+    width: 100%;
+}
+
+.form__group {
+    margin-bottom: 32px;
+}
+
+.form__group-title {
+    margin-bottom: 8px;
+}
+
+.form__label--item {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333333;
+    display: block;
+}
+
+/* 入力フィールド */
+.form__input--text {
+    width: 100%;
+}
+
+.form__input--text input {
+    width: 100%;
+    height: 58px;
+    padding: 0 16px;
+    border: 1px solid #d0d7de;
+    border-radius: 4px;
+    font-size: 16px;
+    color: #333333;
+    background-color: #ffffff;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.form__input--text input::placeholder {
+    color: #9ca3af;
+}
+
+.form__input--text input:focus {
+    border-color: #0969da;
+    box-shadow: 0 0 0 2px rgba(9, 105, 218, 0.1);
+}
+
+/* エラーメッセージ */
+.form__error {
+    margin-top: 8px;
+    font-size: 14px;
+    color: #dc3545;
+    min-height: 20px;
+}
+
+/* 送信ボタン */
+.form__button {
+    margin-top: 40px;
+}
+
+.form__button-submit {
+    width: 100%;
+    height: 65px;
+    background-color: #FF5555;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.form__button-submit:hover {
+    background-color: #ff3333;
+}
+
+.form__button-submit:active {
+    background-color: #e60000;
+}
+
+/* 会員登録リンク */
+.login__link {
+    text-align: center;
+    margin-top: 32px;
+}
+
+.login__button-submit {
+    color: #0969da;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.login__button-submit:hover {
+    text-decoration: underline;
+}
+
+/* ==========================================================================
+   レスポンシブ対応（PC専用 - 1400px対応）
+   ========================================================================== */
+
+@media screen and (max-width: 1400px) {
+    .auth__content {
+        width: 600px;
+        padding: 50px 60px;
+    }
+
+    .auth-header__logo {
+        left: 20px;
+        width: 300px;
+    }
+}

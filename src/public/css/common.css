@@ -1,0 +1,202 @@
+/* ==========================================================================
+   共通スタイル - ヘッダー
+   ========================================================================== */
+
+/* ヘッダー全体 */
+.header {
+   
+
+
+    width: 100%;
+        height: 82px;
+        background-color: #000000;
+        position: relative;
+    max-width: 1512px;
+    margin: 0 auto;
+}
+
+/* ヘッダー内部コンテナ */
+.header__inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+/* ヘッダーアイコン */
+.header__logo {
+    position: absolute;
+    top: 22px;
+    left: 40px;
+    width: 370px;
+    height: 36px;
+}
+
+.header__logo-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+}
+
+.header__logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* COACHTECH テキストロゴ（画像がない場合の代替） */
+.header__logo-text {
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 36px;
+    text-decoration: none;
+}
+
+/* ヘッダーサーチ */
+.header__search {
+    position: absolute;
+    left: 475px;
+    top: 0;
+    width: 563px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header__search-form {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header__search-input {
+    width: 100%;
+    max-width: 500px;
+    height: 44px;
+    padding: 0 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: #ffffff;
+    font-size: 16px;
+    color: #333333;
+    outline: none;
+}
+
+.header__search-input::placeholder {
+    color: #000000;
+    font-size: 16px;
+}
+
+.header__search-input:focus {
+    box-shadow: 0 0 0 2px #007bff;
+}
+
+/* ヘッダーナビ */
+.header__nav {
+    position: absolute;
+    left: 1049px;
+    top: 0;
+    width: 463px;
+    height: 80px;
+    display: flex;    
+    justify-content: flex-start;
+}
+
+.header__nav-list {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.header__nav-item {
+    margin: 0;
+}
+
+.header__nav-link {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.2;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.header__nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* ログアウトボタンスタイル */
+.header__nav-link[type="submit"] {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.2;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.header__nav-link[type="submit"]:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* 出品ボタン特別スタイル */
+.header__nav-link--sell {
+    background-color: #ffffff;
+    color: #000000;
+    font-weight: 600;
+    padding: 8px 20px;
+    border-radius: 4px;
+}
+
+.header__nav-link--sell:hover {
+    background-color: #f8f9fa;
+    color: #000000;
+}
+
+/* ==========================================================================
+   共通レイアウト
+   ========================================================================== */
+
+/* メインコンテンツ */
+.main {
+    min-height: calc(100vh - 80px);
+    padding-top: 0;
+}
+
+/* ==========================================================================
+   レスポンシブ対応（PC専用 - 1400px対応）
+   ========================================================================== */
+
+/* PC画面調整（1400px以下） */
+@media screen and (max-width: 1400px) {
+    .header {
+        max-width: 1400px;
+    }
+
+    .header__search {
+        left: 400px;
+        width: 500px;
+    }
+
+    .header__nav {
+        left: 920px;
+        width: 440px;
+    }
+}

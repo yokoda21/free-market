@@ -76,7 +76,7 @@
                                     <div class="upload-placeholder" id="uploadPlaceholder" style="{{ old('existing_image') ? 'display: none;' : '' }}">
                                         <div class="upload-icon">📷</div>
                                         <p>画像をアップロード</p>
-                                        <p class="upload-note">JPEG, PNG, (最大4MB)</p>
+                                        <p class="upload-note">JPG, PNG, GIF (最大10MB)</p>
                                     </div>
                                     <div class="image-preview" id="imagePreview" style="{{ old('existing_image') ? 'display: block;' : 'display: none;' }}">
                                         <img id="previewImage" src="{{ old('existing_image') ? old('existing_image') : '' }}" alt="プレビュー">
@@ -141,9 +141,7 @@
                                     type="text"
                                     name="name"
                                     id="name"
-                                    placeholder="商品名を入力してください"
                                     value="{{ old('name') }}">
-                                <span class="input-note">商品名は255文字以内で入力してください</span>
                                 @if($errors->has('name') && old('_token'))
                                 <span class="error-message">{{ $errors->first('name') }}</span>
                                 @endif
@@ -155,9 +153,7 @@
                                 <textarea
                                     name="description"
                                     id="description"
-                                    rows="6"
-                                    placeholder="色、材質、注意点など、商品の詳細を記入してください">{{ old('description') }}</textarea>
-                                <span class="input-note">商品説明は255文字以内で入力してください</span>
+                                    rows="6">{{ old('description') }}</textarea>
                                 <div class="char-count">
                                     <span id="descriptionCount">{{ old('description') ? strlen(old('description')) : 0 }}</span>/255文字
                                 </div>
@@ -173,9 +169,7 @@
                                     type="text"
                                     name="brand"
                                     id="brand"
-                                    placeholder="ブランド名（任意）"
                                     value="{{ old('brand') }}">
-                                <span class="input-note">ブランド名は100文字以内で入力してください（任意）</span>
                                 @if($errors->has('brand') && old('_token'))
                                 <span class="error-message">{{ $errors->first('brand') }}</span>
                                 @endif
@@ -194,12 +188,10 @@
                                         type="number"
                                         name="price"
                                         id="price"
-                                        placeholder="0"
                                         value="{{ old('price') }}"
                                         min="0"
                                         max="9999999">
                                 </div>
-                                <span class="input-note">0円以上、9,999,999円以下で入力してください</span>
                                 @if($errors->has('price') && old('_token'))
                                 <span class="error-message">{{ $errors->first('price') }}</span>
                                 @endif
