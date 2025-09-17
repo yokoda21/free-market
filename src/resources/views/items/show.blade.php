@@ -56,22 +56,20 @@
                 <div class="purchase-section">
                     @if($item->is_sold)
                     <div class="purchase-status">
-                        <p class="sold-out">Sold Out</p>
+                        <div class="sold-out">Sold Out</div>
                     </div>
                     @elseif(Auth::check() && $item->user_id === Auth::id())
                     <div class="own-item">
-                        <p class="own-item-text">自分の商品です</p>
+                        <div class="own-item-text">自分の商品です</div>
                     </div>
-                    @else
-                    @auth
+                    @elseif(Auth::check())
                     <a href="{{ route('purchase.show', $item->id) }}" class="btn-purchase">
                         購入手続きへ
                     </a>
                     @else
-                    <p class="purchase-login-required">
-                        <a href="/login">ログイン</a>して購入
-                    </p>
-                    @endauth
+                    <a href="/login" class="btn-purchase-login">
+                        購入手続きへ
+                    </a>
                     @endif
                 </div>
 
@@ -99,72 +97,82 @@
                             <td class="table-value">{{ $item->condition->name }}</td>
                         </tr>
                     </table>
-                    <!-- コメント欄 -->
-                    <div class="comments-section">
-                        <h3 class="section-title">コメント ({{ $commentsCount }})</h3>
+                </div>
 
-                        <!-- コメント投稿フォーム -->
-                        @auth
-                        @if(!Auth::check() || $item->user_id !== Auth::id())
-                        <form class="comment-form" action="{{ route('items.comment', $item->id) }}" method="POST">
-                            @csrf
-                            <div class="form-group">
-                                <label for="comment" class="form-label">商品へのコメント</label>
-                                <textarea
-                                    name="comment"
-                                    id="comment"
-                                    rows="4"
-                                    class="form-textarea"
-                                    placeholder="コメントを入力してください"
-                                    required>{{ old('comment') }}</textarea>
-                                @error('comment')
-                                <span class="error-message">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            <button type="submit" class="btn-comment-submit">
-                                コメントを送信する
-                            </button>
-                        </form>
-                        @else
-                        <p class="comment-disabled">自分の商品にはコメントできません。</p>
-                        @endif
-                        @else
-                        <p class="comment-login-required">
-                            <a href="/login">ログイン</a>してコメントを投稿
-                        </p>
-                        @endauth
+                <!-- コメント欄 -->
+                <div class="comments-section">
+                    <h3 class="section-title">コメント ({{ $commentsCount }})</h3>
 
-                        <!-- コメント一覧 -->
-                        <div class="comments-list">
-                            @forelse($item->comments->sortByDesc('created_at') as $comment)
-                            <div class="comment-item">
-                                <div class="comment-header">
-                                    <div class="comment-user">
-                                        @if($comment->user->profile && $comment->user->profile->profile_image)
-                                        <img src="{{ asset('storage/' . $comment->user->profile->profile_image) }}"
-                                            alt="プロフィール画像" class="user-avatar">
-                                        @else
-                                        <div class="user-avatar-default">{{ mb_substr($comment->user->name, 0, 1) }}</div>
-                                        @endif
-                                        <span class="user-name">{{ $comment->user->name }}</span>
-                                    </div>
-                                    <span class="comment-date">{{ $comment->created_at->format('Y年m月d日 H:i') }}</span>
+                    <!-- コメント一覧を先に表示 -->
+                    <div class="comments-list">
+                        @forelse($item->comments->sortByDesc('created_at') as $comment)
+                        <div class="comment-item">
+                            <div class="comment-header">
+                                <div class="comment-user">
+                                    @if($comment->user->profile && $comment->user->profile->profile_image)
+                                    <img src="{{ asset('storage/' . $comment->user->profile->profile_image) }}"
+                                        alt="プロフィール画像" class="user-avatar">
+                                    @else
+                                    <div class="user-avatar-default">{{ mb_substr($comment->user->name, 0, 1) }}</div>
+                                    @endif
+                                    <span class="user-name">{{ $comment->user->name }}</span>
                                 </div>
-                                <div class="comment-content">
-                                    <p>{!! nl2br(e($comment->comment)) !!}</p>
-                                </div>
+                                <span class="comment-date">{{ $comment->created_at->format('Y年m月d日 H:i') }}</span>
                             </div>
-                            @empty
-                            <p class="no-comments">まだコメントがありません。</p>
-                            @endforelse
+                            <div class="comment-content">
+                                <p>{!! nl2br(e($comment->comment)) !!}</p>
+                            </div>
                         </div>
+                        @empty
+                        <p class="no-comments">まだコメントがありません。</p>
+                        @endforelse
                     </div>
+
+                    <!-- コメント投稿フォーム -->
+                    @auth
+                    @if(!Auth::check() || $item->user_id !== Auth::id())
+                    <form class="comment-form" action="{{ route('items.comment', $item->id) }}" method="POST">
+                        @csrf
+                        <div class="form-group">
+                            <label for="comment" class="form-label">商品へのコメント</label>
+                            <textarea
+                                name="comment"
+                                id="comment"
+                                rows="4"
+                                class="form-textarea"
+                                placeholder="コメントを入力してください"
+                                required>{{ old('comment') }}</textarea>
+                            @error('comment')
+                            <span class="error-message">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <button type="submit" class="btn-comment-submit">
+                            コメントを送信する
+                        </button>
+                    </form>
+                    @else
+                    <div class="comment-disabled">自分の商品にはコメントできません。</div>
+                    @endif
+                    @else
+                    <!-- ログイン前のコメントフォーム表示 -->
+                    <div class="comment-form">
+                        <div class="form-group">
+                            <label class="form-label">商品へのコメント</label>
+                            <textarea
+                                rows="4"
+                                class="form-textarea"
+                                placeholder="コメントを入力してください"
+                                disabled>{{ old('comment') }}</textarea>
+                        </div>
+                        <a href="/login" class="btn-comment-submit">
+                            コメントを送信する
+                        </a>
+                    </div>
+                    @endauth
                 </div>
             </div>
         </div>
     </div>
-
-
 </main>
 @endsection
 
