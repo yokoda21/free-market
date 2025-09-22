@@ -133,7 +133,26 @@
     margin: 0 0 32px 0;
     position: relative;
 }
+/* 購入ボタン（ログイン済み） */
+.btn-purchase {
+    width: 570px;
+    height: 56px;
+    background-color: #FF5555;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    font-size: 18px;
+    font-weight: 600;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-sizing: border-box;
 
+}
+/* 購入ボタン（ログイン前） */
 .btn-purchase-login {
     display: block;
     width: 570px;

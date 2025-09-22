@@ -20,15 +20,7 @@
             </div>
         </div>
 
-        <div class="item-index__heading">
-            @if(request('search'))
-            <h2>「{{ request('search') }}」の検索結果</h2>
-            @elseif(request('tab') == 'mylist')
-            <h2>マイリスト</h2>
-            @else
-            <h2>おすすめ</h2>
-            @endif
-        </div>
+        
 
         @if($items->count() > 0)
         <div class="item-index__items">

@@ -1,0 +1,225 @@
+/* プロフィール編集画面専用CSS */
+
+.edit-profile-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+    position: relative;
+}
+
+/* プロフィール設定タイトル  */
+.edit-profile-header {
+    width: 100%;
+    text-align: center;
+    margin-top: 139px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.edit-profile-header h1 {
+    width: 299px;
+    height: 47px;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 28px;
+    font-weight: 700;
+    color: #333333;
+    line-height: 47px;
+    text-align: center;
+    display: block;
+}
+
+.first-time-message {
+    margin-top: 20px;
+    font-size: 16px;
+    color: #666666;
+}
+
+
+
+/* フォームコンテナ */
+.edit-profile-form-container {
+    width: 680px;
+    margin: 0 auto;
+    position: relative;
+    left: -184px; /* 中央から416px位置に調整 */
+}
+
+/* プロフィール画像エリア  */
+.form-group:first-of-type {
+    margin-top: 94px; /* 233px - 139px = 94px */
+    margin-bottom: 66px;
+}
+
+.profile-image-upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.current-image {
+    width: 150px;
+    height: 150px;
+}
+
+.profile-preview,
+.no-image-placeholder {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid #e5e5e5;
+}
+
+.no-image-placeholder {
+    background-color: #f5f5f5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #999999;
+    font-size: 14px;
+}
+
+.image-upload-controls {
+    text-align: center;
+}
+
+.file-input {
+    display: none;
+}
+
+.file-input-btn {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #ffffff;
+    border: 1px solid #FF5555;
+    border-radius: 4px;
+    color: #FF5555;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.file-input-btn:hover {
+    background-color: #FF5555;
+    color: #ffffff;
+}
+
+.file-note {
+    margin-top: 8px;
+    font-size: 12px;
+    color: #666666;
+}
+
+/* 入力フィールド共通 */
+.form-group {
+    margin-bottom: 32px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333333;
+}
+
+.form-input {
+    width: 680px;
+    height: 60px;
+    padding: 16px;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    font-size: 16px;
+    color: #333333;
+    background-color: #ffffff;
+    transition: border-color 0.3s ease;
+    box-sizing: border-box;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #FF5555;
+}
+
+.form-input.error {
+    border-color: #dc3545;
+}
+
+.form-input::placeholder {
+    color: #999999;
+}
+
+.input-note {
+    margin-top: 4px;
+    font-size: 12px;
+    color: #666666;
+}
+
+.error-message {
+    margin-top: 4px;
+    font-size: 14px;
+    color: #dc3545;
+}
+
+/* ユーザー名入力フィールド  */
+.form-group:nth-of-type(2) {
+    height: 92px;
+    margin-bottom: 24px;
+}
+
+/* 郵便番号・住所・建物名入力エリア */
+.form-group:nth-of-type(3),
+.form-group:nth-of-type(4),
+.form-group:nth-of-type(5) {
+    margin-bottom: 40px;
+}
+
+/* 送信ボタンエリア  */
+.form-actions {
+    margin-top: 67px; /* 1042px - 975px = 67px */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.submit-btn {
+    width: 680px;
+    height: 60px;
+    background-color: #FF5555;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+    background-color: #e04545;
+}
+
+.cancel-btn {
+    padding: 12px 24px;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    color: #666666;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.cancel-btn:hover {
+    background-color: #f5f5f5;
+    border-color: #999999;
+}

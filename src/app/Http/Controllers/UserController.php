@@ -44,8 +44,8 @@ class UserController extends Controller
         // 自動ログイン
         Auth::login($user);
 
-        // 商品一覧画面にリダイレクト
-        return redirect()->route('items.index')->with('success', '会員登録が完了しました');
+        // 初回登録時はプロフィール設定画面にリダイレクト
+        return redirect()->route('user.edit-profile');
     }
 
     /**

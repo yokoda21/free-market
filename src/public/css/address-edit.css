@@ -1,0 +1,163 @@
+/* 住所変更画面専用CSS - Figma仕様準拠 */
+
+.address-edit-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+    position: relative;
+}
+
+/* 住所の変更タイトル - Figma仕様 */
+.address-edit-header {
+    text-align: center;
+    margin-top: 100px;
+    margin-bottom: 80px;
+}
+
+.address-edit-header h1 {
+    font-family: Inter, sans-serif;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #333333;
+    margin: 0;
+}
+
+/* フォームコンテナ */
+.address-edit-form {
+    width: 680px;
+    margin: 0 auto;
+    position: relative;
+}
+
+/* 入力フィールド共通 */
+.form-group {
+    margin-bottom: 60px;
+}
+
+.form-label {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333333;
+    margin-bottom: 12px;
+    display: block;
+}
+
+/* 郵便番号エリア - Figma仕様: width: 205px, height: 36px */
+.postal-code-label {
+    width: 205px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333333;
+    margin-bottom: 12px;
+}
+
+/* 入力フォーム - Figma仕様: width: 680px, height: 45px */
+.form-input {
+    width: 680px;
+    height: 45px;
+    padding: 12px 16px;
+    border: 1px solid #5F5F5F;
+    border-radius: 4px;
+    font-size: 16px;
+    color: #333333;
+    background-color: #ffffff;
+    transition: border-color 0.3s ease;
+    box-sizing: border-box;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #FF5555;
+}
+
+.form-input.error {
+    border-color: #dc3545;
+}
+
+/* エラーメッセージ */
+.error-message {
+    display: block;
+    margin-top: 8px;
+    font-size: 14px;
+    color: #dc3545;
+}
+
+/* 更新ボタン - Figma仕様: width: 680px, height: 60px */
+.form-actions {
+    margin-top: 120px;
+    margin-bottom: 100px;
+}
+
+.btn-update {
+    width: 680px;
+    height: 60px;
+    background-color: #FF5555;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: block;
+    margin: 0 auto;
+}
+
+.btn-update:hover {
+    background-color: #e04545;
+}
+
+.btn-update:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+/* フラッシュメッセージ */
+.flash-message {
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    padding: 12px 20px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    max-width: 500px;
+}
+
+.flash-message.success {
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    color: #155724;
+}
+
+.flash-message.error {
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+    .address-edit-form {
+        width: 100%;
+        max-width: 500px;
+        padding: 0 20px;
+    }
+
+    .postal-code-label,
+    .form-input,
+    .btn-update {
+        width: 100%;
+    }
+
+    .address-edit-header h1 {
+        font-size: 28px;
+    }
+}

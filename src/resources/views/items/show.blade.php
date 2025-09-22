@@ -58,7 +58,7 @@
                     <div class="purchase-status">
                         <div class="sold-out">Sold Out</div>
                     </div>
-                    @elseif(Auth::check() && $item->user_id === Auth::id())
+                    @elseif(Auth::check() && $item->user_id == Auth::id())
                     <div class="own-item">
                         <div class="own-item-text">自分の商品です</div>
                     </div>

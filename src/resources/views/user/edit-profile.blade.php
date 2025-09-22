@@ -2,11 +2,17 @@
 
 @section('title', 'プロフィール設定')
 
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/edit-profile.css') }}">
+@endpush
+
 @section('content')
 <div class="edit-profile-container">
     <div class="edit-profile-header">
         <h1>プロフィール設定</h1>
-        <a href="{{ route('user.profile') }}" class="back-btn">マイページに戻る</a>
+        @if(request()->has('first_time'))
+        <p class="first-time-message">プロフィール情報を設定してください</p>        
+        @endif
     </div>
 
     <div class="edit-profile-form-container">
@@ -15,7 +21,7 @@
 
             <!-- プロフィール画像 -->
             <div class="form-group">
-                <label for="profile_image" class="form-label">プロフィール画像</label>
+                
                 <div class="profile-image-upload">
                     <div class="current-image">
                         @if($profile && $profile->profile_image)
@@ -30,7 +36,7 @@
                     <div class="image-upload-controls">
                         <input type="file" id="profile_image" name="profile_image" accept="image/jpeg,image/png" class="file-input">
                         <label for="profile_image" class="file-input-btn">画像を選択</label>
-                        <p class="file-note">JPEG、PNG形式 (最大2MB)</p>
+                        <p class="file-note"></p>
                     </div>
                 </div>
                 @error('profile_image')
@@ -53,7 +59,7 @@
                 <label for="postal_code" class="form-label">郵便番号</label>
                 <input type="text" id="postal_code" name="postal_code"
                     value="{{ old('postal_code', $profile ? $profile->postal_code : '') }}"
-                    class="form-input @error('postal_code') error @enderror" autocomplete="off">                
+                    class="form-input @error('postal_code') error @enderror" autocomplete="off">
                 @error('postal_code')
                 <p class="error-message">{{ $message }}</p>
                 @enderror
@@ -85,13 +91,15 @@
             <!-- 送信ボタン -->
             <div class="form-actions">
                 <button type="submit" class="submit-btn">更新する</button>
+                @if(!request()->has('first_time'))
                 <a href="{{ route('user.profile') }}" class="cancel-btn">キャンセル</a>
+                @else
+                <a href="{{ route('items.index') }}" class="cancel-btn">後で設定する</a>
+                @endif
             </div>
         </form>
     </div>
 </div>
-
-
 
 <script>
     // プロフィール画像プレビュー機能
@@ -126,7 +134,5 @@
         }
         e.target.value = value;
     });
-
-
 </script>
 @endsection
