@@ -35,7 +35,7 @@
                     </div>
                     <div class="image-upload-controls">
                         <input type="file" id="profile_image" name="profile_image" accept="image/jpeg,image/png" class="file-input">
-                        <label for="profile_image" class="file-input-btn">画像を選択</label>
+                        <label for="profile_image" class="file-input-btn">画像を選択する</label>
                         <p class="file-note"></p>
                     </div>
                 </div>
@@ -90,12 +90,7 @@
 
             <!-- 送信ボタン -->
             <div class="form-actions">
-                <button type="submit" class="submit-btn">更新する</button>
-                @if(!request()->has('first_time'))
-                <a href="{{ route('user.profile') }}" class="cancel-btn">キャンセル</a>
-                @else
-                <a href="{{ route('items.index') }}" class="cancel-btn">後で設定する</a>
-                @endif
+                <button type="submit" class="submit-btn">更新する</button>                
             </div>
         </form>
     </div>

@@ -17,16 +17,21 @@
             <!-- 商品画像 -->
             <div class="form-section image-section">
                 <h3 class="section-title">商品画像</h3>
-                <div class="image-upload-area" id="imageUploadArea">
+                <div class="image-upload-container">
                     <input type="file" name="image" id="imageInput" accept="image/*" style="display: none;">
 
-                    <div class="upload-placeholder" id="uploadPlaceholder" onclick="document.getElementById('imageInput').click();">
-                        <div class="upload-text">画像を選択する</div>
+                    <!-- アップロードエリア（画像選択前） -->
+                    <div class="image-upload-area" id="uploadPlaceholder" onclick="document.getElementById('imageInput').click();" style="{{ old('existing_image') ? 'display: none;' : 'display: block;' }}">
+                        <div class="upload-placeholder">
+                            <div class="upload-text">画像を選択する</div>
+                        </div>
                     </div>
-                </div>
-                <div class="image-preview" id="imagePreview" style="{{ old('existing_image') ? 'display: block;' : 'display: none;' }}">
-                    <img id="previewImage" src="{{ old('existing_image') ? old('existing_image') : '' }}" alt="プレビュー">
-                    <button type="button" class="remove-image" id="removeImage">削除</button>
+
+                    <!-- 画像プレビューエリア（画像選択後） -->
+                    <div class="image-preview" id="imagePreview" style="{{ old('existing_image') ? 'display: block;' : 'display: none;' }}">
+                        <img id="previewImage" src="{{ old('existing_image') ? old('existing_image') : '' }}" alt="プレビュー">
+                        <button type="button" class="remove-image" id="removeImage">削除</button>
+                    </div>
                 </div>
                 @error('image')
                 <span class="error-message">{{ $message }}</span>
@@ -120,3 +125,41 @@
     </div>
 </main>
 @endsection
+
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const imageInput = document.getElementById('imageInput');
+        const uploadPlaceholder = document.getElementById('uploadPlaceholder');
+        const imagePreview = document.getElementById('imagePreview');
+        const previewImage = document.getElementById('previewImage');
+        const removeImage = document.getElementById('removeImage');
+
+        if (imageInput) {
+            imageInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file && file.type.match('image.*')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        previewImage.src = e.target.result;
+                        uploadPlaceholder.style.display = 'none';
+                        imagePreview.style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        if (removeImage) {
+            removeImage.addEventListener('click', function(e) {
+                e.preventDefault();
+                imageInput.value = '';
+                imagePreview.style.display = 'none';
+                uploadPlaceholder.style.display = 'block';
+                previewImage.src = '';
+            });
+        }
+    });
+</script>
+@endpush

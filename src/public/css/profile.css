@@ -6,11 +6,11 @@
     padding: 0 20px;
 }
 
-/* プロフィールヘッダー - Figma仕様: width: 1017px, height: 150px */
+/* プロフィールヘッダー  */
 .profile-header {
     width: 1017px;
     height: 150px;
-    margin: 158px auto 50px auto;
+    margin: 50px auto 50px auto;
     position: relative;
 }
 
@@ -69,40 +69,68 @@
 
 /* タブナビゲーション */
 .tab-navigation {
-    width: 1017px;
-    margin: 0 auto 40px auto;
-    border-bottom: 1px solid #e5e5e5;
+    width: 100%;
+    margin-top: 47px;
+    max-width: 1512px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 170px;
+    /* 商品一覧と同じpadding */
+    box-sizing: border-box;
+    position: relative;
+    border-bottom: none;
+    /* 元のボーダーを削除 */
+}
+
+.tab-navigation::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    /* 47pxから0に変更 */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 2px;
+    background-color: #5F5F5F;
+    z-index: -1;
 }
 
 .tab-buttons {
     display: flex;
-    gap: 0;
+    gap: 60px;
+    /* 商品一覧と同じ間隔 */
 }
 
 .tab-button {
-    padding: 16px 32px;
+    padding: 16px 0;
+    /* 上下パディングのみ、左右は削除 */
     text-decoration: none;
-    color: #666666;
-    font-size: 16px;
-    font-weight: 500;
-    border-bottom: 3px solid transparent;
+    color: #333333;
+    /* #666666から#333333に変更 */
+    font-size: 18px;
+    /* 16pxから18pxに変更 */
+    font-weight: 400;
+    /* 500から400に変更 */
+    border-bottom: 2px solid transparent;
     transition: all 0.3s ease;
     position: relative;
 }
 
 .tab-button.active {
-    color: #FF5555;
-    border-bottom-color: #FF5555;
+    color: #FF0000;    
+    font-weight: 700;
+    /* アクティブ時は太字 */    
 }
 
 .tab-button:hover {
-    color: #FF5555;
+    color: #FF0000;
+    /* #FF5555から#FF0000に変更 */
 }
 
-/* 商品一覧グリッド - Figma仕様: width: 1374px, height: 716px */
+/* 商品一覧グリッド */
 .items-grid {
     width: 1374px;
-    margin: 0 auto;
+    margin: 60px auto;
     display: grid;
     grid-template-columns: repeat(4, 290px);
     gap: 40px 42px;
@@ -192,7 +220,6 @@
 .item-price {
     font-size: 18px;
     font-weight: 600;
-    color: #FF5555;
     margin: 0;
 }
 
