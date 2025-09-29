@@ -94,6 +94,36 @@
     padding-right: 40px;
 }
 
+/* すべてのオプションの背景色 */
+#payment_method option {
+    padding: 10px 10px 10px 35px;
+    /* 左側にチェックマーク用のスペース */
+    background-color: #636769;
+    color: white;
+}
+
+/* 選択中のオプション */
+#payment_method option:checked {
+    background-color: #636769;
+    color: white;
+    position: relative;
+}
+
+/* チェックマークを疑似的に表示 */
+#payment_method option:checked::before {
+    content: "✓ ";
+    color: white;
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+.error-message {
+    color: #e53e3e;
+    font-size: 14px;
+    display: block;
+    margin-top: 5px;
+}
+
 /* 配送先 */
 .shipping-info {
     margin-bottom: 40px;
@@ -129,7 +159,7 @@
 .address-info {
     width: 280px;
     padding: 12px;
-    
+
     font-size: 14px;
     line-height: 1.5;
     color: #333333;
@@ -146,7 +176,7 @@
     width: 440px;
     height: 230px;
     background-color: #ffffff;
-    border: 1px solid #000000;   
+    border: 1px solid #000000;
     padding: 0;
     margin-bottom: 20px;
     box-sizing: border-box;

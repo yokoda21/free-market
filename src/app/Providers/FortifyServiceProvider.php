@@ -47,10 +47,10 @@ class FortifyServiceProvider extends ServiceProvider
             return view('auth.register');
         });
 
-        // === カスタムバリデーション設定 ===
-
-        // ログインバリデーションのカスタマイズ
-        // LoginRequestは代わりにFormRequestMiddlewareで処理
+        // メール認証画面の表示設定
+        Fortify::verifyEmailView(function () {
+            return view('auth.verify-email');
+        });
 
         // 会員登録バリデーションのカスタマイズ
         Fortify::createUsersUsing(\App\Actions\Fortify\CreateNewUser::class);
@@ -76,27 +76,10 @@ class FortifyServiceProvider extends ServiceProvider
             \App\Http\Responses\RegisterResponse::class
         );
 
-        // パスワードリセット画面（将来的に使用）
-        // Fortify::requestPasswordResetLinkView(function () {
-        //     return view('auth.forgot-password');
-        // });
-
-        // Fortify::resetPasswordView(function ($request) {
-        //     return view('auth.reset-password', ['request' => $request]);
-        // });
-
-        // メール認証画面（将来的に使用）
-        // Fortify::verifyEmailView(function () {
-        //     return view('auth.verify-email');
-        // });
-
-        // 2段階認証画面（将来的に使用）
-        // Fortify::twoFactorChallengeView(function () {
-        //     return view('auth.two-factor-challenge');
-        // });
-
-        // Fortify::confirmPasswordView(function () {
-        //     return view('auth.confirm-password');
-        // });
+        // メール認証完了後のリダイレクト先設定
+        $this->app->singleton(
+            \Laravel\Fortify\Contracts\VerifyEmailResponse::class,
+            \App\Http\Responses\VerifyEmailResponse::class
+        );
     }
 }

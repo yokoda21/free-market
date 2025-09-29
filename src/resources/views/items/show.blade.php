@@ -130,7 +130,7 @@
 
                     <!-- コメント投稿フォーム -->
                     @auth
-                    @if(!Auth::check() || $item->user_id !== Auth::id())
+                    @if($item->user_id !== Auth::id())
                     <form class="comment-form" action="{{ route('items.comment', $item->id) }}" method="POST">
                         @csrf
                         <div class="form-group">
@@ -140,8 +140,7 @@
                                 id="comment"
                                 rows="4"
                                 class="form-textarea"
-                                placeholder="コメントを入力してください"
-                                required>{{ old('comment') }}</textarea>
+                                aria-required="true">{{ old('comment') }}</textarea>
                             @error('comment')
                             <span class="error-message">{{ $message }}</span>
                             @enderror

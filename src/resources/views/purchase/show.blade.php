@@ -27,14 +27,21 @@
             <!-- 支払い方法 -->
             <div class="payment-method">
                 <h3>支払い方法</h3>
-                <select name="payment_method" id="payment_method" required>
-                    <option value="">選択してください</option>
+                <select
+                    name="payment_method"
+                    id="payment_method"
+                    class="@error('payment_method') error @enderror"
+                    aria-required="true">
+                    <option value="" id="placeholder-option">選択してください</option>
                     @foreach($paymentMethods as $value => $label)
-                    <option value="{{ $value }}" {{ old('payment_method') == $value ? 'selected' : '' }}>
-                        {{ $label }}
+                    <option value="{{ $value }}" data-label="{{ $label }}" {{ old('payment_method') == $value ? 'selected' : '' }}>
+                        {{ old('payment_method') == $value ? '✓ ' : '' }}{{ $label }}
                     </option>
                     @endforeach
                 </select>
+                @error('payment_method')
+                <span class="error-message">{{ $message }}</span>
+                @enderror
             </div>
 
             <!-- 配送先 -->
@@ -82,3 +89,43 @@
     }
 </script>
 @endsection
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const paymentSelect = document.getElementById('payment_method');
+        const placeholderOption = document.getElementById('placeholder-option');
+
+        // 選択が変更されたとき
+        paymentSelect.addEventListener('change', function() {
+            // すべてのオプションからチェックマークを削除
+            Array.from(paymentSelect.options).forEach(option => {
+                if (option.value !== '') {
+                    const originalLabel = option.getAttribute('data-label');
+                    option.textContent = originalLabel;
+                }
+            });
+
+            // 選択されたオプションにチェックマークを追加
+            if (this.value !== '') {
+                const selectedOption = this.options[this.selectedIndex];
+                const originalLabel = selectedOption.getAttribute('data-label');
+                selectedOption.textContent = '✓ ' + originalLabel;
+
+                // 「選択してください」を削除
+                if (placeholderOption) {
+                    placeholderOption.remove();
+                }
+            }
+        });
+
+        // ページ読み込み時に既に値が選択されている場合
+        if (paymentSelect.value !== '') {
+            const selectedOption = paymentSelect.options[paymentSelect.selectedIndex];
+            const originalLabel = selectedOption.getAttribute('data-label');
+            selectedOption.textContent = '✓ ' + originalLabel;
+
+            if (placeholderOption) {
+                placeholderOption.remove();
+            }
+        }
+    });
+</script>

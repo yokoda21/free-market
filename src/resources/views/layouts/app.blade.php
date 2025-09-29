@@ -42,9 +42,6 @@
                     <li class="header__nav-item">
                         <a href="{{ route('login') }}" class="header__nav-link">ログイン</a>
                     </li>
-                    <li class="header__nav-item">
-                        <a href="{{ route('register') }}" class="header__nav-link">会員登録</a>
-                    </li>
                     @else
                     <li class="header__nav-item">
                         <form action="{{ route('logout') }}" method="POST" style="display: inline;">
@@ -52,10 +49,10 @@
                             <button type="submit" class="header__nav-link" style="background: none; border: none; cursor: pointer; color: #ffffff; font-size: 16px; padding: 8px 16px; border-radius: 4px;">ログアウト</button>
                         </form>
                     </li>
+                    @endguest
                     <li class="header__nav-item">
                         <a href="{{ route('user.profile') }}" class="header__nav-link">マイページ</a>
                     </li>
-                    @endguest
                     <li class="header__nav-item">
                         <a href="{{ route('items.create') }}" class="header__nav-link header__nav-link--sell">出品</a>
                     </li>

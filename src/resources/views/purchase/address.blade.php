@@ -30,14 +30,14 @@
 
         <!-- 郵便番号 -->
         <div class="form-group">
-            <label for="postal_code" class="postal-code-label">郵便番号</label>
+            <label for="postal_code" class="form-label">郵便番号</label>
             <input
                 type="text"
                 id="postal_code"
                 name="postal_code"
                 class="form-input @error('postal_code') error @enderror"
                 value="{{ old('postal_code', $profile->postal_code ?? '') }}"
-                required>
+                aria-required="true">
             @error('postal_code')
             <span class="error-message">{{ $message }}</span>
             @enderror
@@ -52,7 +52,7 @@
                 name="address"
                 class="form-input @error('address') error @enderror"
                 value="{{ old('address', $profile->address ?? '') }}"
-                required>
+                aria-required="true">
             @error('address')
             <span class="error-message">{{ $message }}</span>
             @enderror
