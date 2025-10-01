@@ -46,7 +46,7 @@
                     <li class="header__nav-item">
                         <form action="{{ route('logout') }}" method="POST" style="display: inline;">
                             @csrf
-                            <button type="submit" class="header__nav-link" style="background: none; border: none; cursor: pointer; color: #ffffff; font-size: 16px; padding: 8px 16px; border-radius: 4px;">ログアウト</button>
+                            <button type="submit" class="header__nav-link">ログアウト</button>
                         </form>
                     </li>
                     @endguest

@@ -40,9 +40,6 @@
     border-bottom: 2px solid transparent;
 }
 
-.item-tabs__menu-item--active {
-    border-bottom-color: #FF0000;
-}
 
 .item-tabs__menu-item a {
     color: #333333;

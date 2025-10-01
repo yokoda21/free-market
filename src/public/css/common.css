@@ -4,13 +4,13 @@
 
 /* ヘッダー全体 */
 .header {
-   
+
 
 
     width: 100%;
-        height: 82px;
-        background-color: #000000;
-        position: relative;
+    height: 82px;
+    background-color: #000000;
+    position: relative;
     max-width: 1512px;
     margin: 0 auto;
 }
@@ -60,7 +60,7 @@
     position: absolute;
     left: 475px;
     top: 0;
-    width: 563px;
+    width: 500px;
     height: 80px;
     display: flex;
     align-items: center;
@@ -68,8 +68,10 @@
 }
 
 .header__search-form {
-    width: 100%;
-    height: 100%;
+    width: 563px;
+    height: 80px;
+    left: 475px;
+    opacity: 1;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -77,20 +79,23 @@
 
 .header__search-input {
     width: 100%;
-    max-width: 500px;
-    height: 44px;
-    padding: 0 16px;
+    max-width: 450px;
+    height: 50px;
+    padding: 0 16px 0 40px;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
     background-color: #ffffff;
-    font-size: 16px;
+    font-size: 24px;
     color: #333333;
     outline: none;
+    text-align: left;
+
 }
 
 .header__search-input::placeholder {
     color: #000000;
-    font-size: 16px;
+    font-size: 24px;
+    text-align: left;
 }
 
 .header__search-input:focus {
@@ -104,17 +109,20 @@
     top: 0;
     width: 463px;
     height: 80px;
-    display: flex;    
+    display: flex;
+    align-items: center;
     justify-content: flex-start;
 }
 
 .header__nav-list {
     display: flex;
     align-items: center;
+    font-size: 24px;
     gap: 32px;
     list-style: none;
     margin: 0;
     padding: 0;
+    justify-content: space-between;
 }
 
 .header__nav-item {
@@ -124,12 +132,15 @@
 .header__nav-link {
     color: #ffffff;
     text-decoration: none;
-    font-size: 16px;
+    font-family: Inter;
     font-weight: 400;
-    line-height: 1.2;
-    padding: 8px 16px;
-    border-radius: 4px;
-    transition: background-color 0.2s ease;
+    font-style: Regular;
+    font-size: 24px;
+    leading-trim: NONE;
+    line-height: 100%;
+    letter-spacing: 0%;
+    text-align: center;
+    vertical-align: middle;
 }
 
 .header__nav-link:hover {
@@ -140,7 +151,7 @@
 .header__nav-link[type="submit"] {
     color: #ffffff;
     text-decoration: none;
-    font-size: 16px;
+    font-size: 24px;
     font-weight: 400;
     line-height: 1.2;
     padding: 8px 16px;
@@ -156,12 +167,12 @@
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* 出品ボタン特別スタイル */
+/* 出品ボタン */
 .header__nav-link--sell {
     background-color: #ffffff;
     color: #000000;
     font-weight: 600;
-    padding: 8px 20px;
+    padding: 11px 26px;
     border-radius: 4px;
 }
 

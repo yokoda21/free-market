@@ -51,65 +51,93 @@
 
 /* 商品名 */
 .item-name {
-    font-size: 24px;
-    font-weight: 600;
-    color: #333333;
-    margin: 0 0 8px 0;
-    line-height: 1.3;
+    color: #000000;
+    font-family: Inter;
+    font-weight: 700;
+    font-style: Bold;
+    font-size: 45px;
+    leading-trim: NONE;
+    line-height: 100%;
+    letter-spacing: 0%;
+    vertical-align: middle;
+    margin-bottom: 15px;
 }
 
 /* ブランド名 */
 .item-brand {
-    font-size: 14px;
-    color: #666666;
-    margin: 0 0 16px 0;
+    width: 570px;
+    height: 28px;
+    top: 77px;
+    opacity: 1;
+    color: #000000;
+    font-family: Inter;
+    font-weight: 400;
+    font-style: Regular;
+    font-size: 20px;
+    leading-trim: NONE;
+    line-height: 100%;
+    letter-spacing: 0%;
+    vertical-align: middle;
+    margin-bottom: 30px;
 }
 
 /* 価格 */
 .item-price {
-    margin: 0 0 20px 0;
+    width: 570px;
+    height: 45px;
+    top: 133px;
+    angle: 0 deg;
+    opacity: 1;
+    margin-bottom: 30px;
 }
 
 .price {
-    font-size: 20px;
-    font-weight: 600;
-    color: #333333;
+    font-family: Inter;
+    font-weight: 400;
+    font-style: Regular;
+    font-size: 45px;
+    leading-trim: NONE;
+    line-height: 100%;
+    letter-spacing: 0%;
+    vertical-align: middle;
 }
 
 .price-tax {
-    font-size: 12px;
-    color: #666666;
-    margin-left: 4px;
+    font-family: Inter;
+    font-weight: 400;
+    font-style: Regular;
+    font-size: 30px;
+    leading-trim: NONE;
+    line-height: 100%;
+    letter-spacing: 0%;
+    vertical-align: middle;
 }
 
-/* いいね・コメント統計 */
+/* いいね・コメントエリア */
 .item-stats {
     display: flex;
-    gap: 16px;
-    margin: 0 0 24px 0;
+    gap: 20px;
+    align-items: center;
 }
 
 .stats-item {
     display: flex;
+    flex-direction: column;
+    /* 縦並びに変更 */
     align-items: center;
+    /* 中央揃え */
     gap: 4px;
+    /* アイコンと数字の間隔 */
+    margin-left: 40px;
 }
 
 .like-btn {
     background: none;
     border: none;
+    padding: 0;
     cursor: pointer;
-    padding: 2px;
-    border-radius: 4px;
-    transition: background-color 0.2s ease;
-}
-
-.like-btn:hover {
-    background-color: #f5f5f5;
-}
-
-.like-btn.liked .like-icon {
-    color: #FFD700;
+    display: flex;
+    align-items: center;
 }
 
 .like-btn:disabled {
@@ -117,22 +145,28 @@
     opacity: 0.5;
 }
 
+/* アイコン画像 */
 .like-icon,
 .comment-icon {
-    font-size: 16px;
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
 }
 
+/* カウント数 */
 .like-count,
 .comment-count {
-    font-size: 14px;
-    color: #666666;
+    font-size: 16px;
+    color: #333333;
+    align-items: center;
 }
 
 /* 購入セクション */
 .purchase-section {
-    margin: 0 0 32px 0;
+    margin: 0 0 50px 0;
     position: relative;
 }
+
 /* 購入ボタン（ログイン済み） */
 .btn-purchase {
     width: 570px;
@@ -141,8 +175,10 @@
     color: #ffffff;
     border: none;
     border-radius: 4px;
-    font-size: 18px;
-    font-weight: 600;
+    font-family: Inter;
+    font-size: 30px;
+    font-weight: 700;
+    font-style: Bold;
     text-decoration: none;
     display: flex;
     align-items: center;
@@ -150,27 +186,30 @@
     cursor: pointer;
     transition: background-color 0.3s ease;
     box-sizing: border-box;
+    margin-top: 40px;
 
 }
+
 /* 購入ボタン（ログイン前） */
 .btn-purchase-login {
-    display: block;
     width: 570px;
     height: 56px;
-    padding: 0;
     background-color: #FF5555;
     color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    font-family: Inter;
+    font-size: 30px;
+    font-weight: 700;
+    font-style: Bold;
     text-decoration: none;
-    text-align: center;
-    border-radius: 5px;
-    font-size: 16px;
-    font-weight: 600;
-    transition: background-color 0.2s ease;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: none;
     cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-sizing: border-box;
+    margin-top: 40px;
 }
 
 .btn-purchase-login:hover {
@@ -256,7 +295,7 @@
     font-size: 18px;
     font-weight: 600;
     color: #333333;
-    margin: 0 0 12px 0;   
+    margin: 0 0 12px 0;
     padding-bottom: 6px;
 }
 
@@ -302,7 +341,7 @@
 
 .category-tag {
     display: inline-block;
-    background-color: #f8f9fa;
+    background-color: #D9D9D9;
     color: #333333;
     padding: 2px 8px;
     border-radius: 8px;
@@ -311,7 +350,7 @@
 }
 
 /* コメントセクション */
-.comments-section {    
+.comments-section {
     width: 570px;
     height: 743px;
     angle: 0deg;
@@ -330,7 +369,8 @@
 }
 
 .form-group {
-    margin-bottom: 12px;
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
 
 
@@ -367,9 +407,11 @@
     color: #ffffff;
     border: none;
     padding: 0;
-    border-radius: 5px;
-    font-size: 16px;
-    font-weight: 600;
+    border-radius: 4px;
+    font-size: 25px;
+    font-weight: 700;
+    font-family: inter;
+    font-style: bold;
     cursor: pointer;
     transition: background-color 0.2s ease;
     width: 570px;
@@ -377,10 +419,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    text-decoration: none;
 }
 
 .btn-comment-submit:hover {
     background-color: #ff3333;
+    text-decoration: none;
 }
 
 .comment-disabled,
@@ -396,7 +440,7 @@
     align-items: center;
     justify-content: center;
     background-color: #f8f9fa;
-    border-radius: 5px;
+    border-radius: 4px;
 }
 
 .comment-login-required a {
@@ -468,7 +512,7 @@
 .comment-content p {
     margin: 0;
     line-height: 1.5;
-    color: #333333;
+    color: #000000;
     white-space: pre-wrap;
     font-size: 14px;
 }
@@ -476,9 +520,10 @@
 .no-comments {
     text-align: center;
     color: #666666;
+    background-color: #E5E5E5;
     font-style: italic;
     padding: 32px 0;
-    margin: 0;
+    margin-bottom: 40px;
     font-size: 14px;
 }
 

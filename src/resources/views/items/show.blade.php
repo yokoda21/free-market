@@ -38,16 +38,22 @@
                         <button class="like-btn {{ $isLiked ? 'liked' : '' }}"
                             data-item-id="{{ $item->id }}"
                             {{ $isOwnItem ? 'disabled' : '' }}>
-                            <span class="like-icon">{{ $isLiked ? '★' : '☆' }}</span>
+                            <img src="{{ asset('images/icons/star.png') }}"
+                                alt="いいね"
+                                class="like-icon">
                         </button>
                         @else
-                        <span class="like-icon">☆</span>
+                        <img src="{{ asset('images/icons/star.png') }}"
+                            alt="いいね"
+                            class="like-icon">
                         @endauth
                         <span class="like-count">{{ $likesCount }}</span>
                     </div>
 
                     <div class="stats-item">
-                        <span class="comment-icon">💬</span>
+                        <img src="{{ asset('images/icons/comment.png') }}"
+                            alt="コメント"
+                            class="comment-icon">
                         <span class="comment-count">{{ $commentsCount }}</span>
                     </div>
                 </div>

@@ -88,10 +88,16 @@
 }
 
 .form__label--item {
-    font-size: 16px;
-    font-weight: 500;
+
     color: #333333;
     display: block;
+    font-family: Inter;
+    font-weight: 700;
+    font-style: Bold;
+    font-size: 24px;
+    leading-trim: NONE;
+    line-height: 100%;
+    letter-spacing: 0%;
 }
 
 /* 入力フィールド */
@@ -103,7 +109,7 @@
     width: 680px;
     height: 58px;
     padding: 0 0;
-    border: 1px solid #d0d7de;
+    border: 1px solid #5F5F5F;
     border-radius: 4px;
     font-size: 16px;
     color: #333333;

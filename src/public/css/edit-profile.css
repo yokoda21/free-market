@@ -56,9 +56,12 @@
 
 .profile-image-upload {
     display: flex;
-    flex-direction: row; /* column から row に変更 */
-    align-items: center; /* 縦方向中央揃え */
-    gap: 30px; /* 20px から 30px に拡張 */
+    flex-direction: row;
+    /* column から row に変更 */
+    align-items: center;
+    /* 縦方向中央揃え */
+    gap: 30px;
+    /* 20px から 30px に拡張 */
 }
 
 .current-image {
@@ -111,11 +114,11 @@
     font-family: 'Inter';
     font-size: 20px;
     font-weight: 700;
-    transition: all 0.3s ease;    
+    transition: all 0.3s ease;
     width: 175px;
     height: 57px;
     text-align: center;
-    
+
 }
 
 .file-input-btn:hover {
@@ -137,16 +140,22 @@
 .form-label {
     display: block;
     margin-bottom: 8px;
-    font-size: 16px;
-    font-weight: 600;
     color: #333333;
+    font-family: Inter;
+    font-weight: 700;
+    font-style: Bold;
+    font-size: 24px;
+    leading-trim: NONE;
+    line-height: 100%;
+    letter-spacing: 0%;
+    vertical-align: middle;
 }
 
 .form-input {
     width: 680px;
     height: 60px;
     padding: 16px;
-    border: 1px solid #e5e5e5;
+    border: 1px solid #5F5F5F;
     border-radius: 4px;
     font-size: 16px;
     color: #333333;
@@ -164,10 +173,6 @@
     border-color: #dc3545;
 }
 
-.form-input::placeholder {
-    color: #999999;
-}
-
 .input-note {
     margin-top: 4px;
     font-size: 12px;
@@ -180,22 +185,26 @@
     color: #dc3545;
 }
 
-/* ユーザー名入力フィールド  */
-.form-group:nth-of-type(2) {
-    height: 92px;
-    margin-bottom: 24px;
-}
-
-/* 郵便番号・住所・建物名入力エリア */
-.form-group:nth-of-type(3),
+/* ユーザー名・郵便番号・住所・建物名入力エリア */
+.form-group:nth-of-type(2) .form-group:nth-of-type(3),
 .form-group:nth-of-type(4),
 .form-group:nth-of-type(5) {
     margin-bottom: 40px;
+    width: 680;
+    height: 92;
+    top: 613px;
+    left: 416px;
+    angle: 0 deg;
+    opacity: 1;
+    border-radius: 4px;
+    border-width: 1px;
+    border-color: #5F5F5F;
 }
 
 /* 送信ボタンエリア  */
 .form-actions {
-    margin-top: 67px; /* 1042px - 975px = 67px */
+    margin-top: 67px;
+    /* 1042px - 975px = 67px */
     display: flex;
     flex-direction: column;
     align-items: center;

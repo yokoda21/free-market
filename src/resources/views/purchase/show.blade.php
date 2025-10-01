@@ -27,18 +27,22 @@
             <!-- 支払い方法 -->
             <div class="payment-method">
                 <h3>支払い方法</h3>
-                <select
-                    name="payment_method"
-                    id="payment_method"
-                    class="@error('payment_method') error @enderror"
-                    aria-required="true">
-                    <option value="" id="placeholder-option">選択してください</option>
-                    @foreach($paymentMethods as $value => $label)
-                    <option value="{{ $value }}" data-label="{{ $label }}" {{ old('payment_method') == $value ? 'selected' : '' }}>
-                        {{ old('payment_method') == $value ? '✓ ' : '' }}{{ $label }}
-                    </option>
-                    @endforeach
-                </select>
+                <!-- カスタムセレクトボックス -->
+                <div class="custom-dropdown @error('payment_method') error @enderror">
+                    <input type="hidden" name="payment_method" id="payment_method_hidden" value="{{ old('payment_method', '') }}">
+                    <div class="dropdown-selected" id="dropdown_selected">
+                        <span class="selected-text">選択してください</span>
+                        <span class="dropdown-arrow">▼</span>
+                    </div>
+                    <div class="dropdown-options" id="dropdown_options">
+                        @foreach($paymentMethods as $value => $label)
+                        <div class="dropdown-option" data-value="{{ $value }}">
+                            <span class="option-check">✓</span>
+                            <span class="option-text">{{ $label }}</span>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
                 @error('payment_method')
                 <span class="error-message">{{ $message }}</span>
                 @enderror
@@ -77,55 +81,63 @@
 </div>
 
 <script>
-    // 支払い方法の表示更新
-    const paymentSelect = document.getElementById('payment_method');
-    const paymentDisplay = document.getElementById('payment-display');
-
-    if (paymentSelect && paymentDisplay) {
-        paymentSelect.addEventListener('change', function() {
-            const selectedOption = this.options[this.selectedIndex];
-            paymentDisplay.textContent = selectedOption.text === '選択してください' ? '未選択' : selectedOption.text;
-        });
-    }
-</script>
-@endsection
-<script>
     document.addEventListener('DOMContentLoaded', function() {
-        const paymentSelect = document.getElementById('payment_method');
-        const placeholderOption = document.getElementById('placeholder-option');
+        const dropdown = document.querySelector('.custom-dropdown');
+        const selected = document.getElementById('dropdown_selected');
+        const selectedText = selected.querySelector('.selected-text');
+        const options = document.getElementById('dropdown_options');
+        const hiddenInput = document.getElementById('payment_method_hidden');
+        const paymentDisplay = document.getElementById('payment-display');
+        const allOptions = options.querySelectorAll('.dropdown-option');
 
-        // 選択が変更されたとき
-        paymentSelect.addEventListener('change', function() {
-            // すべてのオプションからチェックマークを削除
-            Array.from(paymentSelect.options).forEach(option => {
-                if (option.value !== '') {
-                    const originalLabel = option.getAttribute('data-label');
-                    option.textContent = originalLabel;
+        // 初期値の設定（old()値がある場合）
+        const oldValue = hiddenInput.value;
+        if (oldValue) {
+            allOptions.forEach(option => {
+                if (option.dataset.value === oldValue) {
+                    option.classList.add('selected');
+                    const text = option.querySelector('.option-text').textContent;
+                    selectedText.textContent = text;
+                    paymentDisplay.textContent = text;
                 }
             });
+        }
 
-            // 選択されたオプションにチェックマークを追加
-            if (this.value !== '') {
-                const selectedOption = this.options[this.selectedIndex];
-                const originalLabel = selectedOption.getAttribute('data-label');
-                selectedOption.textContent = '✓ ' + originalLabel;
-
-                // 「選択してください」を削除
-                if (placeholderOption) {
-                    placeholderOption.remove();
-                }
-            }
+        // ドロップダウンの開閉
+        selected.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdown.classList.toggle('active');
         });
 
-        // ページ読み込み時に既に値が選択されている場合
-        if (paymentSelect.value !== '') {
-            const selectedOption = paymentSelect.options[paymentSelect.selectedIndex];
-            const originalLabel = selectedOption.getAttribute('data-label');
-            selectedOption.textContent = '✓ ' + originalLabel;
+        // オプション選択
+        allOptions.forEach(option => {
+            option.addEventListener('click', function(e) {
+                e.stopPropagation();
 
-            if (placeholderOption) {
-                placeholderOption.remove();
+                // 以前の選択をクリア
+                allOptions.forEach(opt => opt.classList.remove('selected'));
+
+                // 新しい選択を設定
+                this.classList.add('selected');
+                const value = this.dataset.value;
+                const text = this.querySelector('.option-text').textContent;
+
+                // 値を更新
+                hiddenInput.value = value;
+                selectedText.textContent = text;
+                paymentDisplay.textContent = text;
+
+                // ドロップダウンを閉じる
+                dropdown.classList.remove('active');
+            });
+        });
+
+        // 外側をクリックしたら閉じる
+        document.addEventListener('click', function(e) {
+            if (!dropdown.contains(e.target)) {
+                dropdown.classList.remove('active');
             }
-        }
+        });
     });
 </script>
+@endsection

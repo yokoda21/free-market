@@ -28,8 +28,6 @@
                         <img src="{{ asset('storage/' . $profile->profile_image) }}" alt="現在のプロフィール画像" id="preview-image" class="profile-preview">
                         @else
                         <div class="no-image-placeholder" id="preview-image">
-                            <i class="icon-camera"></i>
-                            <p>画像を選択</p>
                         </div>
                         @endif
                     </div>
@@ -82,7 +80,6 @@
                 <input type="text" id="building" name="building"
                     value="{{ old('building', $profile ? $profile->building : '') }}"
                     class="form-input @error('building') error @enderror">
-                <p class="input-note">任意項目です</p>
                 @error('building')
                 <p class="error-message">{{ $message }}</p>
                 @enderror
