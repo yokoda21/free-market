@@ -2,11 +2,11 @@
    共通スタイル - ヘッダー
    ========================================================================== */
 
+/* Interフォントの読み込み */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
 /* ヘッダー全体 */
 .header {
-
-
-
     width: 100%;
     height: 82px;
     background-color: #000000;
@@ -171,7 +171,7 @@
 .header__nav-link--sell {
     background-color: #ffffff;
     color: #000000;
-    font-weight: 600;
+    font-weight: 400;
     padding: 11px 26px;
     border-radius: 4px;
 }
@@ -190,6 +190,7 @@
     min-height: calc(100vh - 80px);
     padding-top: 0;
 }
+
 
 /* ==========================================================================
    レスポンシブ対応（PC専用 - 1400px対応）

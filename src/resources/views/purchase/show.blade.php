@@ -55,9 +55,9 @@
                     <a href="{{ route('purchase.address', $item->id) }}" class="change-link">変更する</a>
                 </div>
                 <div class="address-info">
-                    〒{{ $profile->postal_code ?? '123-4567' }}<br>
-                    {{ $profile->address ?? '東京都渋谷区' }}<br>
-                    {{ $profile->building ?? 'マンション101' }}
+                    <div class="address-line">〒{{ $profile->postal_code ?? '123-4567' }}</div>
+                    <div class="address-line">{{ $profile->address ?? '東京都渋谷区' }}</div>
+                    <div class="address-line">{{ $profile->building ?? 'マンション101' }}</div>
                 </div>
             </div>
         </div>

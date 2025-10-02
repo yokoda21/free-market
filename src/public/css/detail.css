@@ -422,11 +422,6 @@
     text-decoration: none;
 }
 
-.btn-comment-submit:hover {
-    background-color: #ff3333;
-    text-decoration: none;
-}
-
 .comment-disabled,
 .comment-login-required {
     color: #666666;

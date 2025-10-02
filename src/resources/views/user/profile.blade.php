@@ -61,7 +61,6 @@
 
                 <div class="item-info">
                     <h3 class="item-name">{{ $item->name }}</h3>
-                    <p class="item-price">¥{{ number_format($item->price) }}</p>
 
                     @if($page === 'buy' && $item->purchase)
                     <p class="purchase-date">購入日: {{ $item->purchase->created_at->format('Y年m月d日') }}</p>

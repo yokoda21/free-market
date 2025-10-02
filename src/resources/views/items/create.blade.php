@@ -15,8 +15,8 @@
             @csrf
 
             <!-- 商品画像 -->
+            <h3 class="section-title">商品画像</h3>
             <div class="form-section image-section">
-                <h3 class="section-title">商品画像</h3>
                 <div class="image-upload-container">
                     <input type="file" name="image" id="imageInput" accept="image/*" style="display: none;">
 
