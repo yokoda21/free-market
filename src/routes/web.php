@@ -79,3 +79,13 @@ Route::middleware('auth')->group(function () {
     // ログアウト
     Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 });
+
+// Stripe決済成功時のコールバック
+Route::get('/purchase/{item_id}/success', [PurchaseController::class, 'success'])
+    ->name('purchase.success')
+    ->middleware('auth');
+
+// Stripe決済キャンセル時のコールバック
+Route::get('/purchase/{item_id}/cancel', [PurchaseController::class, 'cancel'])
+    ->name('purchase.cancel')
+    ->middleware('auth');

@@ -66,8 +66,6 @@
         @yield('content')
     </main>
 
-    <!-- JavaScript Files -->
-    <script src="{{ asset('js/app.js') }}"></script>
     @stack('scripts')
 </body>
 

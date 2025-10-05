@@ -137,7 +137,33 @@ class ItemController extends Controller
             return redirect()->route('login');
         }
 
-        $categories = Category::orderBy('name')->get();
+        // Figmaの表示順序でカテゴリーを並び替え
+        $categoryOrder = [
+            'ファッション',
+            '家電',
+            'インテリア',
+            'レディース',
+            'メンズ',
+            'コスメ',
+            '本',
+            'ゲーム',
+            'スポーツ',
+            'キッチン',
+            'ハンドメイド',
+            'アクセサリー',
+            'おもちゃ',
+            'ベビー・キッズ'
+        ];
+
+        // 全カテゴリーを取得
+        $allCategories = Category::all();
+
+        // カスタム順序で並び替え
+        $categories = $allCategories->sortBy(function ($category) use ($categoryOrder) {
+            $position = array_search($category->name, $categoryOrder);
+            return $position !== false ? $position : 999;
+        })->values();
+
         $conditions = Condition::orderBy('id')->get();
 
         return view('items.create', compact('categories', 'conditions'));

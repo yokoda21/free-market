@@ -59,17 +59,28 @@
                     @enderror
                 </div>
 
+
                 <!-- 商品の状態 -->
                 <div class="form-group">
                     <label>商品の状態</label>
-                    <select name="condition_id" id="condition_id">
-                        <option value="">選択してください</option>
-                        @foreach($conditions as $condition)
-                        <option value="{{ $condition->id }}" {{ old('condition_id') == $condition->id ? 'selected' : '' }}>
-                            {{ $condition->name }}
-                        </option>
-                        @endforeach
-                    </select>
+
+                    <!-- カスタムドロップダウン -->
+                    <div class="custom-dropdown-condition @error('condition_id') error @enderror">
+                        <input type="hidden" name="condition_id" id="condition_id_hidden" value="{{ old('condition_id', '') }}">
+                        <div class="dropdown-selected-condition" id="dropdown_selected_condition">
+                            <span class="selected-text-condition">選択してください</span>
+                            <span class="dropdown-arrow-condition">▼</span>
+                        </div>
+                        <div class="dropdown-options-condition" id="dropdown_options_condition">
+                            @foreach($conditions as $condition)
+                            <div class="dropdown-option-condition" data-value="{{ $condition->id }}">
+                                <span class="option-check-condition">✓</span>
+                                <span class="option-text-condition">{{ $condition->name }}</span>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+
                     @error('condition_id')
                     <span class="error-message">{{ $message }}</span>
                     @enderror
@@ -130,35 +141,81 @@
 @push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // ========== 画像プレビュー機能 ==========
         const imageInput = document.getElementById('imageInput');
         const uploadPlaceholder = document.getElementById('uploadPlaceholder');
         const imagePreview = document.getElementById('imagePreview');
         const previewImage = document.getElementById('previewImage');
-        const removeImage = document.getElementById('removeImage');
+        const removeImageBtn = document.getElementById('removeImage');
 
-        if (imageInput) {
-            imageInput.addEventListener('change', function(e) {
-                const file = e.target.files[0];
-                if (file && file.type.match('image.*')) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        previewImage.src = e.target.result;
-                        uploadPlaceholder.style.display = 'none';
-                        imagePreview.style.display = 'block';
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-        }
+        // 画像選択時
+        imageInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    previewImage.src = event.target.result;
+                    uploadPlaceholder.style.display = 'none';
+                    imagePreview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
 
-        if (removeImage) {
-            removeImage.addEventListener('click', function(e) {
-                e.preventDefault();
-                imageInput.value = '';
-                imagePreview.style.display = 'none';
-                uploadPlaceholder.style.display = 'block';
-                previewImage.src = '';
+        // 画像削除ボタン
+        removeImageBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            imageInput.value = '';
+            previewImage.src = '';
+            uploadPlaceholder.style.display = 'block';
+            imagePreview.style.display = 'none';
+        });
+
+        // ========== 商品の状態カスタムドロップダウン ==========
+        const dropdown = document.querySelector('.custom-dropdown-condition');
+        const selected = document.getElementById('dropdown_selected_condition');
+        const optionsContainer = document.getElementById('dropdown_options_condition');
+        const options = document.querySelectorAll('.dropdown-option-condition');
+        const hiddenInput = document.getElementById('condition_id_hidden');
+        const selectedText = document.querySelector('.selected-text-condition');
+
+        // ドロップダウン開閉
+        selected.addEventListener('click', function(e) {
+            e.stopPropagation();
+            dropdown.classList.toggle('active');
+        });
+
+        // オプション選択
+        options.forEach(option => {
+            option.addEventListener('click', function() {
+                const value = this.getAttribute('data-value');
+                const text = this.querySelector('.option-text-condition').textContent;
+
+                // 選択状態を更新
+                options.forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+
+                // 表示を更新
+                selectedText.textContent = text;
+                hiddenInput.value = value;
+
+                // ドロップダウンを閉じる
+                dropdown.classList.remove('active');
             });
+        });
+
+        // 外側クリックで閉じる
+        document.addEventListener('click', function() {
+            dropdown.classList.remove('active');
+        });
+
+        // 既存の値を復元
+        const currentValue = hiddenInput.value;
+        if (currentValue) {
+            const selectedOption = document.querySelector(`.dropdown-option-condition[data-value="${currentValue}"]`);
+            if (selectedOption) {
+                selectedOption.click();
+            }
         }
     });
 </script>

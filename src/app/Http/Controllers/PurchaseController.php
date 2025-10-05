@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\PurchaseRequest;
 use App\Http\Requests\AddressRequest;
+use Stripe\Stripe;
+use Stripe\Checkout\Session;
 
 /**
  * 購入コントローラー
@@ -51,7 +53,7 @@ class PurchaseController extends Controller
 
         // 支払い方法の選択肢
         $paymentMethods = [
-            'convenience_store' => 'コンビニ支払い',
+            'convenience' => 'コンビニ支払い',
             'card' => 'カード支払い',
         ];
 
@@ -61,7 +63,7 @@ class PurchaseController extends Controller
     /**
      * 商品購入処理
      * FN022: 商品購入機能
-     * FN023: 支払い方法選択機能
+     * FN023: 支払い方法選択機能(Stripe)
      * 
      * @param PurchaseRequest $request
      * @param int $item_id
@@ -69,47 +71,150 @@ class PurchaseController extends Controller
      */
     public function store(PurchaseRequest $request, $item_id)
     {
-        // 認証必須
-        if (!Auth::check()) {
-            return redirect()->route('login');
-        }
-
+        // バリデーション      
         $item = Item::findOrFail($item_id);
 
-        // 既に購入済みの場合
+        // 購入済みチェック
         if ($item->is_sold) {
             return redirect()
                 ->route('items.show', $item)
                 ->with('error', 'この商品は既に購入されています。');
         }
 
-        // 自分の商品は購入不可
-        if ($item->user_id === Auth::id()) {
+        // ユーザーのプロファイルから住所を取得
+        $profile = Auth::user()->profile;
+
+        if (!$profile || !$profile->postal_code || !$profile->address) {
             return redirect()
-                ->route('items.show', $item)
-                ->with('error', '自分の商品は購入できません。');
+                ->route('purchase.address', $item_id)
+                ->with('error', '配送先を設定してください。');
         }
 
-        $validated = $request->validated();
+        $paymentMethod = $request->payment_method;
 
-        // 購入処理
+        // カード支払いの場合
+        if ($paymentMethod === 'card') {
+            $validated = [
+                'postal_code' => $profile->postal_code,
+                'address' => $profile->address,
+                'building' => $profile->building,
+                'payment_method' => $paymentMethod,
+            ];
+
+            return $this->createStripeCheckout($item, $validated);
+        }
+
+        // コンビニ支払いの場合
         Purchase::create([
             'user_id' => Auth::id(),
             'item_id' => $item->id,
-            'postal_code' => $validated['postal_code'],
-            'address' => $validated['address'],
-            'building' => $validated['building'] ?? null,
-            'payment_method' => $validated['payment_method'],
+            'postal_code' => $profile->postal_code,
+            'address' => $profile->address,
+            'building' => $profile->building,
+            'payment_method' => $paymentMethod,
         ]);
 
-        // 商品を売り切れにする
         $item->update(['is_sold' => true]);
 
-        // FN022要件: 購入完了後は商品一覧画面に遷移
         return redirect()
             ->route('items.index')
             ->with('success', '商品を購入しました。');
     }
+
+    /**
+     * Stripe Checkout セッション作成
+     */
+    private function createStripeCheckout($item, $validated)
+    {
+        // Stripe APIキーを設定
+        Stripe::setApiKey(config('stripe.secret_key'));
+
+        try {
+            // 住所情報をセッションに一時保存
+            session([
+                'purchase_address' => [
+                    'postal_code' => $validated['postal_code'],
+                    'address' => $validated['address'],
+                    'building' => $validated['building'] ?? null,
+                ]
+            ]);
+
+            // Stripe Checkout セッション作成
+            $session = Session::create([
+                'payment_method_types' => ['card'],
+                'line_items' => [[
+                    'price_data' => [
+                        'currency' => 'jpy',
+                        'product_data' => [
+                            'name' => $item->name,
+                            'description' => mb_substr($item->description, 0, 100),
+                        ],
+                        'unit_amount' => $item->price,
+                    ],
+                    'quantity' => 1,
+                ]],
+                'mode' => 'payment',
+                'success_url' => route('purchase.success', ['item_id' => $item->id]),
+                'cancel_url' => route('purchase.cancel', ['item_id' => $item->id]),
+            ]);
+
+            // Stripe決済画面へリダイレクト
+            return redirect($session->url);
+        } catch (\Exception $e) {
+            return redirect()
+                ->back()
+                ->with('error', '決済画面への接続に失敗しました。');
+        }
+    }
+
+    /**
+     * Stripe決済成功時の処理
+     */
+    public function success($item_id)
+    {
+        $item = Item::findOrFail($item_id);
+
+        // セッションから住所情報を取得
+        $addressData = session('purchase_address');
+
+        if (!$addressData) {
+            return redirect()
+                ->route('purchase.show', $item_id)
+                ->with('error', '購入情報が見つかりません。');
+        }
+
+        // 購入情報を保存
+        Purchase::create([
+            'user_id' => Auth::id(),
+            'item_id' => $item->id,
+            'postal_code' => $addressData['postal_code'],
+            'address' => $addressData['address'],
+            'building' => $addressData['building'] ?? null,
+            'payment_method' => 'card',
+        ]);
+
+        $item->update(['is_sold' => true]);
+
+        // セッションクリア
+        session()->forget('purchase_address');
+
+        return redirect()
+            ->route('items.index')
+            ->with('success', '商品を購入しました。');
+    }
+
+    /**
+     * Stripe決済キャンセル時の処理
+     */
+    public function cancel($item_id)
+    {
+        session()->forget('purchase_address');
+
+        return redirect()
+            ->route('purchase.show', $item_id)
+            ->with('error', '決済がキャンセルされました。');
+    }
+
 
     /**
      * 配送先住所変更画面表示 (PG07)
