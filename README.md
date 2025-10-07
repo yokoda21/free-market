@@ -21,6 +21,7 @@ git@github.com:yokoda21/free-market.git
 ・DB_PASSWORD=laravel_pass 
 
 メール認証はMailhogを使用しています。.envに以下のメール設定を追加
+
 ・MAIL_MAILER=smtp
 ・MAIL_HOST=mailhog
 ・MAIL_PORT=1025
