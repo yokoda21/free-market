@@ -9,7 +9,6 @@
 ## 環境構築
 ### Dockerビルド
 1. 'git clone git@github.com:yokoda21/free-market.git
-
 2. docker-compose up -d --build
 *MySQLはOSによって起動しない場合があるのでそれぞれのPCに合わせてdocker-compose.ymlファイルを編集してください。
 
@@ -26,7 +25,6 @@
 ・DB_PASSWORD=laravel_pass 
 
 メール認証はMailhogを使用しています。.envに以下のメール設定を追加
-
 ・MAIL_MAILER=smtp  
 ・MAIL_HOST=mailhog  
 ・MAIL_PORT=1025  
@@ -62,9 +60,9 @@ php artisan storage:link
 ![ER図](free-market02(背景白).png)
 
 ## URL
-・開発環境：http://localhost/
-・phpMyAdmin : http://localhost:8080/
-・MailHog（メール確認）：http://localhost:8025/
+・開発環境：http://localhost/  
+・phpMyAdmin : http://localhost:8080/  
+・MailHog（メール確認）：http://localhost:8025/  
 
 ## 注意事項
 
