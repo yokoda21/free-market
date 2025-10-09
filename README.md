@@ -15,8 +15,7 @@
 ### Laravel環境構築
 1. docker-compose exec php bash
 2. composer install
-3. 環境変数の設定 「.env.example」ファイルを 「.env」ファイルに命名を変更。または、新しく.envファイルを作成、.envに以下の環境変数を追加
-
+3. 環境変数の設定 「.env.example」ファイルを 「.env」ファイルに命名を変更。または、新しく.envファイルを作成、.envに以下の環境変数を追加  
 ・DB_CONNECTION=mysql  
 ・DB_HOST=mysql  
 ・DB_PORT=3306  
@@ -34,8 +33,7 @@
 ・MAIL_FROM_ADDRESS="noreply@freemarket.local"  
 ・MAIL_FROM_NAME="${APP_NAME}"  
 
-4. Stripe決済の設定を.envに追加
-
+4. Stripe決済の設定を.envに追加  
 ・STRIPE_PUBLIC_KEY=your_stripe_public_key  
 ・STRIPE_SECRET_KEY=your_stripe_secret_key  
 
