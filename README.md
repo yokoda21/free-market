@@ -63,6 +63,25 @@ php artisan storage:link
 ・phpMyAdmin : http://localhost:8080/  
 ・MailHog（メール確認）：http://localhost:8025/  
 
+## テストアカウント
+
+動作確認用のテストアカウントは、シーダー実行時に自動作成されます。
+
+### 一般ユーザー
+
+| ユーザー名 | メールアドレス | パスワード | 用途 |
+|-----------|--------------|----------|------|
+| 出品者太郎 | seller1@example.com | password | 商品出品用 |
+| 購入者花子 | buyer1@example.com | password | 商品購入用 |
+| テスト次郎 | test1@example.com | password | 一般テスト用 |
+
+※ テストアカウントもメール認証が必要です。
+
+### 使用例
+- **商品出品テスト**：seller1@example.com でログイン
+- **商品購入テスト**：buyer1@example.com でログイン
+- **いいね・コメント機能**：どのアカウントでもOK
+
 ## 注意事項
 
 ### メール認証について
