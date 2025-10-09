@@ -36,15 +36,15 @@
 ・MAIL_FROM_ADDRESS="noreply@freemarket.local"  
 ・MAIL_FROM_NAME="${APP_NAME}"  
 
-4. Stripe決済の設定を.envに追加
+4. Stripe決済の設定を.envに追加  
 ・STRIPE_PUBLIC_KEY=your_stripe_public_key  
 ・STRIPE_SECRET_KEY=your_stripe_secret_key  
 
-※ Stripeのテストキーは以下から取得してください：
+※ Stripeのテストキーは以下から取得してください：  
 https://dashboard.stripe.com/test/apikeys
 
-テスト用カード番号：
-・カード番号：4242 4242 4242 4242
+テスト用カード番号：  
+・カード番号：4242 4242 4242 4242  
 ・有効期限：任意の未来の日付（例：12/34）
 ・CVC：任意の3桁の数字（例：123）
 5. php artisan key:generate
