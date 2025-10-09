@@ -35,8 +35,8 @@
 ・MAIL_FROM_NAME="${APP_NAME}"  
 
 4. Stripe決済の設定を.envに追加  
-・STRIPE_PUBLIC_KEY=your_stripe_public_key
-・STRIPE_SECRET_KEY=your_stripe_secret_key
+・STRIPE_PUBLIC_KEY=your_stripe_public_key  
+・STRIPE_SECRET_KEY=your_stripe_secret_key  
 
 ※ Stripeのテストキーは以下から取得してください：  
 https://dashboard.stripe.com/test/apikeys
