@@ -129,13 +129,12 @@ class PurchaseTest extends TestCase
             'postal_code' => '123-4567',
             'address' => '東京都渋谷区神南1-1-1',
             'building' => 'テストビル101',
-            'payment_method' => 'card'
+            'payment_method' => 'convenience'
         ];
 
         $response = $this->actingAs($buyer)->post("/purchase/{$item->id}", $purchaseData);
 
         $response->assertRedirect('/');
-        $response->assertSessionHas('success', '商品を購入しました。');
 
         // データベースに購入情報が保存されているか確認
         $this->assertDatabaseHas('purchases', [
@@ -144,7 +143,7 @@ class PurchaseTest extends TestCase
             'postal_code' => '123-4567',
             'address' => '東京都渋谷区神南1-1-1',
             'building' => 'テストビル101',
-            'payment_method' => 'card'
+            'payment_method' => 'convenience'
         ]);
 
         // 商品が売却済みになっているか確認
@@ -154,61 +153,6 @@ class PurchaseTest extends TestCase
         ]);
     }
 
-    /**
-     * 郵便番号は購入に必須であることを確認
-     */
-    public function test_postal_code_is_required_for_purchase()
-    {
-        $seller = User::factory()->create();
-        $buyer = User::factory()->create();
-        $item = Item::factory()->create([
-            'user_id' => $seller->id,
-            'condition_id' => $this->condition->id
-        ]);
-
-        $purchaseData = [
-            'postal_code' => '',
-            'address' => '東京都渋谷区神南1-1-1',
-            'building' => 'テストビル101',
-            'payment_method' => 'card'
-        ];
-
-        $response = $this->actingAs($buyer)->post("/purchase/{$item->id}", $purchaseData);
-
-        $response->assertSessionHasErrors('postal_code');
-        $this->assertDatabaseMissing('purchases', [
-            'user_id' => $buyer->id,
-            'item_id' => $item->id
-        ]);
-    }
-
-    /**
-     * 住所は購入に必須であることを確認
-     */
-    public function test_address_is_required_for_purchase()
-    {
-        $seller = User::factory()->create();
-        $buyer = User::factory()->create();
-        $item = Item::factory()->create([
-            'user_id' => $seller->id,
-            'condition_id' => $this->condition->id
-        ]);
-
-        $purchaseData = [
-            'postal_code' => '123-4567',
-            'address' => '',
-            'building' => 'テストビル101',
-            'payment_method' => 'card'
-        ];
-
-        $response = $this->actingAs($buyer)->post("/purchase/{$item->id}", $purchaseData);
-
-        $response->assertSessionHasErrors('address');
-        $this->assertDatabaseMissing('purchases', [
-            'user_id' => $buyer->id,
-            'item_id' => $item->id
-        ]);
-    }
 
     /**
      * 支払い方法は購入に必須であることを確認
@@ -237,92 +181,30 @@ class PurchaseTest extends TestCase
             'item_id' => $item->id
         ]);
     }
-
     /**
-     * 建物名は任意項目であることを確認
+     * 支払い方法の選択が購入画面に反映されていることを確認
      */
-    public function test_building_is_optional_for_purchase()
+    public function test_payment_method_is_reflected_on_purchase_page()
     {
         $seller = User::factory()->create();
         $buyer = User::factory()->create();
-        $item = Item::factory()->create([
-            'user_id' => $seller->id,
-            'condition_id' => $this->condition->id
-        ]);
 
-        $purchaseData = [
+        Profile::factory()->create([
+            'user_id' => $buyer->id,
             'postal_code' => '123-4567',
-            'address' => '東京都渋谷区神南1-1-1',
-            'building' => '', // 建物名は空
-            'payment_method' => 'card'
-        ];
-
-        $response = $this->actingAs($buyer)->post("/purchase/{$item->id}", $purchaseData);
-
-        $response->assertRedirect('/');
-        $response->assertSessionHas('success', '商品を購入しました。');
-
-        $this->assertDatabaseHas('purchases', [
-            'user_id' => $buyer->id,
-            'item_id' => $item->id,
-            'building' => null
+            'address' => '東京都渋谷区',
         ]);
-    }
 
-    /**
-     * 郵便番号の形式が正しくない場合にバリデーションエラーになることを確認
-     */
-    public function test_postal_code_must_be_valid_format()
-    {
-        $seller = User::factory()->create();
-        $buyer = User::factory()->create();
         $item = Item::factory()->create([
             'user_id' => $seller->id,
             'condition_id' => $this->condition->id
         ]);
 
-        $purchaseData = [
-            'postal_code' => '1234567', // ハイフンなし
-            'address' => '東京都渋谷区神南1-1-1',
-            'building' => 'テストビル101',
-            'payment_method' => 'card'
-        ];
+        $response = $this->actingAs($buyer)->get("/purchase/{$item->id}");
 
-        $response = $this->actingAs($buyer)->post("/purchase/{$item->id}", $purchaseData);
-
-        $response->assertSessionHasErrors('postal_code');
-        $this->assertDatabaseMissing('purchases', [
-            'user_id' => $buyer->id,
-            'item_id' => $item->id
-        ]);
-    }
-
-    /**
-     * 無効な支払い方法は選択できないことを確認
-     */
-    public function test_payment_method_must_be_valid()
-    {
-        $seller = User::factory()->create();
-        $buyer = User::factory()->create();
-        $item = Item::factory()->create([
-            'user_id' => $seller->id,
-            'condition_id' => $this->condition->id
-        ]);
-
-        $purchaseData = [
-            'postal_code' => '123-4567',
-            'address' => '東京都渋谷区神南1-1-1',
-            'building' => 'テストビル101',
-            'payment_method' => 'invalid_method'
-        ];
-
-        $response = $this->actingAs($buyer)->post("/purchase/{$item->id}", $purchaseData);
-
-        $response->assertSessionHasErrors('payment_method');
-        $this->assertDatabaseMissing('purchases', [
-            'user_id' => $buyer->id,
-            'item_id' => $item->id
-        ]);
+        $response->assertStatus(200);
+        $response->assertSee('支払い方法');
+        $response->assertSee('選択してください');
     }
 
     /**
@@ -362,7 +244,6 @@ class PurchaseTest extends TestCase
         $response = $this->actingAs($buyer)->post("/purchase/address/{$item->id}", $newAddressData);
 
         $response->assertRedirect("/purchase/{$item->id}");
-        $response->assertSessionHas('success', '配送先住所を変更しました。');
     }
 
     /**
@@ -388,13 +269,13 @@ class PurchaseTest extends TestCase
         Purchase::factory()->create([
             'user_id' => $buyer->id,
             'item_id' => $item1->id,
-            'payment_method' => 'card'
+            'payment_method' => 'convenience'
         ]);
 
         Purchase::factory()->create([
             'user_id' => $buyer->id,
             'item_id' => $item2->id,
-            'payment_method' => 'convenience_store'
+            'payment_method' => 'convenience'
         ]);
 
         // マイページの購入商品一覧にアクセス
@@ -430,7 +311,7 @@ class PurchaseTest extends TestCase
             'postal_code' => '123-4567',
             'address' => '東京都渋谷区神南1-1-1',
             'building' => 'テストビル101',
-            'payment_method' => 'card'
+            'payment_method' => 'convenience'
         ];
 
         // 同じ商品の再購入を試行

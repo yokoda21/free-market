@@ -117,8 +117,7 @@ class PurchaseController extends Controller
         $item->update(['is_sold' => true]);
 
         return redirect()
-            ->route('items.index')
-            ->with('success', '商品を購入しました。');
+            ->route('items.index');
     }
 
     /**

@@ -1,16 +1,14 @@
-/* ==========================================================================
-   商品一覧ページ専用CSS - index.css
-   ========================================================================== */
+/* 商品一覧ページ専用CSS - index.css*/
 
 /* タブメニュー */
 .item-tabs {
     width: 100%;
     max-width: 1512px;
-    margin: 0 auto 40px auto;    
+    margin: 0 auto 40px auto;
 }
 
 .item-tabs__menu {
-    display: flex;   
+    display: flex;
     width: 100%;
     margin-top: 47px;
     max-width: 1512px;
@@ -18,7 +16,7 @@
     margin-right: auto;
     padding: 0 170px;
     box-sizing: border-box;
-    position: relative;   
+    position: relative;
 }
 
 /* タブメニュー下のボーダー表示 */
@@ -82,7 +80,6 @@
 /* 商品カード */
 .item-card {
     width: calc((100% - 120px) / 4);
-    /* 4カラム計算: (全幅 - gap×3) / 4 */
     min-width: 280px;
     max-width: 320px;
     background: #ffffff;
@@ -90,10 +87,6 @@
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
     overflow: hidden;
     transition: transform 0.2s ease;
-}
-
-.item-card:hover {
-    transform: translateY(-2px);
 }
 
 .item-card__link {
@@ -146,16 +139,12 @@
     font-weight: 600;
 }
 
-/* 商品名 */
-.item-card__content {
-    padding: 12px 16px 16px 16px;
-}
-
 .item-card__name {
-    font-size: 16px;
+    font-size: 25px;
+    font-family: 'Inter' sans-serif;
     font-weight: 400;
-    color: #333333;
-    line-height: 1.3;
+    color: #000000;
+    line-height: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -181,9 +170,7 @@
     color: #666666;
 }
 
-/* ==========================================================================
-   レスポンシブ対応（PC専用 - 1400px対応）
-   ========================================================================== */
+/* レスポンシブ対応（PC専用 - 1400px対応） */
 
 @media screen and (max-width: 1400px) {
     .item-card {

@@ -31,17 +31,22 @@
                     <span class="price-tax">(税込)</span>
                 </div>
 
-                <!-- いいね・コメント -->
+                <!-- いいね・コメント部分 -->
                 <div class="item-stats">
                     <div class="stats-item">
                         @auth
+                        @if (!$isOwnItem)
                         <button class="like-btn {{ $isLiked ? 'liked' : '' }}"
-                            data-item-id="{{ $item->id }}"
-                            {{ $isOwnItem ? 'disabled' : '' }}>
+                            data-item-id="{{ $item->id }}">
                             <img src="{{ asset('images/icons/star.png') }}"
                                 alt="いいね"
-                                class="like-icon">
+                                class="like-icon {{ $isLiked ? 'liked-icon' : '' }}">
                         </button>
+                        @else
+                        <img src="{{ asset('images/icons/star.png') }}"
+                            alt="いいね"
+                            class="like-icon disabled">
+                        @endif
                         @else
                         <img src="{{ asset('images/icons/star.png') }}"
                             alt="いいね"
@@ -123,7 +128,6 @@
                                     @endif
                                     <span class="user-name">{{ $comment->user->name }}</span>
                                 </div>
-                                <span class="comment-date">{{ $comment->created_at->format('Y年m月d日 H:i') }}</span>
                             </div>
                             <div class="comment-content">
                                 <p>{!! nl2br(e($comment->comment)) !!}</p>
@@ -183,48 +187,96 @@
 
 @push('scripts')
 <script>
-    // CSRF トークン設定
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    document.addEventListener('DOMContentLoaded', function() {
+        'use strict';
 
-    // いいね機能
-    const likeBtn = document.querySelector('.like-btn');
-    if (likeBtn && !likeBtn.disabled) {
+        console.log('=== いいね機能初期化 ===');
+
+        // いいねボタンの初期化
+        const likeBtn = document.querySelector('.like-btn');
+
+        if (!likeBtn) {
+            console.log('いいねボタンが見つからない、または無効です');
+            return;
+        }
+
+        // CSRFトークン取得
+        const csrfTokenMeta = document.querySelector('meta[name="csrf-token"]');
+        if (!csrfTokenMeta) {
+            console.error('CSRFトークンが見つかりません');
+            return;
+        }
+
+        const csrfToken = csrfTokenMeta.getAttribute('content');
+        console.log('CSRFトークン取得成功');
+
+        // いいねボタンのクリックイベント
         likeBtn.addEventListener('click', function() {
-            const itemId = this.dataset.itemId;
+            console.log('=== いいねボタンクリック ===');
 
-            fetch(`/items/${itemId}/like`, {
+            const itemId = this.dataset.itemId;
+            const likeIcon = this.querySelector('.like-icon');
+            const likeCount = document.querySelector('.like-count');
+
+            console.log('商品ID:', itemId);
+
+            // APIリクエスト送信
+            fetch('/items/' + itemId + '/like', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': csrfToken
                     }
                 })
-                .then(response => response.json())
-                .then(data => {
+                .then(function(response) {
+                    console.log('レスポンスステータス:', response.status);
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(function(data) {
+                    console.log('レスポンスデータ:', data);
+
                     if (data.error) {
                         alert(data.error);
                         return;
                     }
 
-                    // いいねボタンの状態更新
-                    const likeIcon = this.querySelector('.like-icon');
-                    const likeCount = document.querySelector('.like-count');
-
-                    if (data.liked) {
-                        this.classList.add('liked');
-                        likeIcon.textContent = '★';
-                    } else {
-                        this.classList.remove('liked');
-                        likeIcon.textContent = '☆';
+                    // いいねボタンとアイコンの状態更新
+                    if (data.liked !== undefined) {
+                        if (data.liked) {
+                            likeBtn.classList.add('liked');
+                            likeIcon.classList.add('liked-icon');
+                        } else {
+                            likeBtn.classList.remove('liked');
+                            likeIcon.classList.remove('liked-icon');
+                        }
+                    } else if (data.is_liked !== undefined) {
+                        // レスポンスのキー名が異なる場合の対応
+                        if (data.is_liked) {
+                            likeBtn.classList.add('liked');
+                            likeIcon.classList.add('liked-icon');
+                        } else {
+                            likeBtn.classList.remove('liked');
+                            likeIcon.classList.remove('liked-icon');
+                        }
                     }
 
-                    likeCount.textContent = data.likesCount;
+                    // いいね数を更新
+                    if (data.likesCount !== undefined) {
+                        likeCount.textContent = data.likesCount;
+                    } else if (data.likes_count !== undefined) {
+                        likeCount.textContent = data.likes_count;
+                    }
+
+                    console.log('=== 更新完了 ===');
                 })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('エラーが発生しました。');
+                .catch(function(error) {
+                    console.error('エラー:', error);
+                    alert('エラーが発生しました。ページを再読み込みしてください。');
                 });
         });
-    }
+    });
 </script>
 @endpush

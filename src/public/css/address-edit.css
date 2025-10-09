@@ -1,4 +1,4 @@
-/* 住所変更画面専用CSS - Figma仕様準拠 */
+/* 住所変更画面専用CSS */
 
 .address-edit-container {
     max-width: 1400px;
@@ -7,7 +7,7 @@
     position: relative;
 }
 
-/* 住所の変更タイトル - Figma仕様 */
+/* 住所の変更タイトル */
 .address-edit-header {
     text-align: center;
     margin-top: 100px;
@@ -44,7 +44,7 @@
     display: block;
 }
 
-/* 郵便番号エリア - Figma仕様: width: 205px, height: 36px */
+/* 郵便番号エリア */
 .postal-code-label {
     width: 205px;
     height: 36px;
@@ -56,7 +56,7 @@
     margin-bottom: 12px;
 }
 
-/* 入力フォーム - Figma仕様: width: 680px, height: 45px */
+/* 入力フォーム */
 .form-input {
     width: 680px;
     height: 45px;
@@ -87,7 +87,7 @@
     color: #dc3545;
 }
 
-/* 更新ボタン - Figma仕様: width: 680px, height: 60px */
+/* 更新ボタン */
 .form-actions {
     margin-top: 120px;
     margin-bottom: 100px;
@@ -115,32 +115,6 @@
 .btn-update:disabled {
     background-color: #cccccc;
     cursor: not-allowed;
-}
-
-/* フラッシュメッセージ */
-.flash-message {
-    position: fixed;
-    top: 80px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1000;
-    padding: 12px 20px;
-    border-radius: 4px;
-    font-size: 14px;
-    font-weight: 500;
-    max-width: 500px;
-}
-
-.flash-message.success {
-    background-color: #d4edda;
-    border: 1px solid #c3e6cb;
-    color: #155724;
-}
-
-.flash-message.error {
-    background-color: #f8d7da;
-    border: 1px solid #f5c6cb;
-    color: #721c24;
 }
 
 /* レスポンシブ対応 */

@@ -165,6 +165,34 @@ class ItemTest extends TestCase
             'item_id' => $item->id,
         ]);
     }
+    /**
+     * ログインユーザーがいいねを解除できる
+     * @test
+     */
+    public function test_user_can_unlike_item()
+    {
+        $item = Item::factory()->create([
+            'user_id' => $this->otherUser->id,
+            'condition_id' => $this->condition->id,
+        ]);
+
+        // いいね作成
+        Like::factory()->create([
+            'user_id' => $this->user->id,
+            'item_id' => $item->id,
+        ]);
+
+        // いいね解除
+        $response = $this->actingAs($this->user)
+            ->post("/items/{$item->id}/like");
+
+        $response->assertStatus(200);
+
+        $this->assertDatabaseMissing('likes', [
+            'user_id' => $this->user->id,
+            'item_id' => $item->id,
+        ]);
+    }
 
     /**
      * マイリストでいいねした商品のみ表示される

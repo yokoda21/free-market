@@ -62,7 +62,7 @@
     line-height: 1.2;
 }
 
-.item-price {   
+.item-price {
     color: #000000;
     margin: 0;
     font-family: 'Inter', sans-serif;
@@ -330,7 +330,7 @@
 }
 
 
-/* レスポンシブ対応 */
+/* レスポンシブ対応（PC専用 - 1400px対応）*/
 @media (max-width: 1400px) {
     .purchase-form {
         flex-direction: column;
@@ -345,22 +345,5 @@
     .summary-box {
         width: 100%;
         max-width: 440px;
-    }
-}
-
-@media (max-width: 768px) {
-    .custom-dropdown {
-        width: 100%;
-        max-width: 265px;
-    }
-
-    .item-card {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .address-info {
-        width: 100%;
-        max-width: 280px;
     }
 }

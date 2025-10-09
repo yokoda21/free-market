@@ -32,8 +32,8 @@ class RegisterTest extends TestCase
             'password_confirmation' => 'password123',
         ]);
 
-        // リダイレクトが発生することを確認
-        $this->assertTrue($response->isRedirection());
+        // メール認証画面にリダイレクト
+        $response->assertRedirect('/email/verify');
 
         // データベースにユーザーが作成されていることを確認
         $this->assertDatabaseHas('users', [
@@ -41,6 +41,7 @@ class RegisterTest extends TestCase
             'email' => 'test@example.com'
         ]);
     }
+
 
     /**
      * 名前が未入力の場合のバリデーションテスト
@@ -87,6 +88,38 @@ class RegisterTest extends TestCase
             'email' => 'test@example.com',
             'password' => '',
             'password_confirmation' => '',
+        ]);
+
+        $response->assertSessionHasErrors('password');
+        $this->assertDatabaseCount('users', 0);
+    }
+
+    /**
+     * パスワードが8文字未満の場合のバリデーションテスト
+     */
+    public function test_password_must_be_at_least_8_characters()
+    {
+        $response = $this->post('/register', [
+            'name' => 'テストユーザー',
+            'email' => 'test@example.com',
+            'password' => '1234567', // 7文字
+            'password_confirmation' => '1234567',
+        ]);
+
+        $response->assertSessionHasErrors('password');
+        $this->assertDatabaseCount('users', 0);
+    }
+
+    /**
+     * パスワード確認が一致しない場合のバリデーションテスト
+     */
+    public function test_password_confirmation_must_match()
+    {
+        $response = $this->post('/register', [
+            'name' => 'テストユーザー',
+            'email' => 'test@example.com',
+            'password' => 'password123',
+            'password_confirmation' => 'different123',
         ]);
 
         $response->assertSessionHasErrors('password');

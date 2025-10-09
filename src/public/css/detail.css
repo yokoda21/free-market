@@ -1,12 +1,10 @@
-/* ==========================================================================
-   商品詳細画面専用CSS - detail.css
-   ========================================================================== */
+/*   商品詳細画面専用CSS - detail.css  */
 
 /* メインコンテンツ */
 .detail-main {
-    min-height: calc(100vh - 80px);
+    height: 1380px;
     background-color: #ffffff;
-    padding: 40px 20px;
+    padding: 80px 0 0 60px;
 }
 
 /* コンテナ */
@@ -38,6 +36,7 @@
     object-fit: cover;
     background-color: #f3f4f6;
     display: block;
+    margin: 36px 30px 0 30px;
 }
 
 /* 商品情報エリア */
@@ -45,8 +44,7 @@
     width: 690px;
     height: 1704.4005126953125px;
     angle: 0deg;
-    opacity: 1;
-    left: 690px;
+    margin: 0 45px 0 45px;
 }
 
 /* 商品名 */
@@ -123,11 +121,8 @@
 .stats-item {
     display: flex;
     flex-direction: column;
-    /* 縦並びに変更 */
     align-items: center;
-    /* 中央揃え */
     gap: 4px;
-    /* アイコンと数字の間隔 */
     margin-left: 40px;
 }
 
@@ -146,11 +141,28 @@
 }
 
 /* アイコン画像 */
-.like-icon,
+.like-icon {
+    width: 40px;
+    height: 40px;
+    filter: grayscale(100%);
+    transition: filter 0.2s ease;
+}
+
 .comment-icon {
     width: 40px;
     height: 40px;
     object-fit: contain;
+}
+
+/* いいね済み状態：黄色にする */
+.liked-icon {
+    filter: brightness(0) saturate(100%) invert(95%) sepia(33%) saturate(2961%) hue-rotate(347deg) brightness(97%) contrast(104%);
+}
+
+/* 自分の商品の場合 */
+.like-icon.disabled {
+    opacity: 0.5;
+    filter: grayscale(100%);
 }
 
 /* カウント数 */
@@ -499,11 +511,6 @@
     font-size: 14px;
 }
 
-.comment-date {
-    font-size: 12px;
-    color: #666666;
-}
-
 .comment-content p {
     margin: 0;
     line-height: 1.5;
@@ -529,9 +536,7 @@
     display: block;
 }
 
-/* ==========================================================================
-   レスポンシブ対応（PC専用 - 1400px対応）
-   ========================================================================== */
+/* レスポンシブ対応（PC専用 - 1400px対応）*/
 
 @media screen and (max-width: 1400px) {
     .detail-container {

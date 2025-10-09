@@ -79,22 +79,4 @@
     </form>
 </div>
 
-<script>
-    // 郵便番号フォーマット（自動ハイフン挿入）
-    document.getElementById('postal_code').addEventListener('input', function(e) {
-        let value = e.target.value.replace(/[^\d]/g, '');
-        if (value.length >= 4) {
-            value = value.slice(0, 3) + '-' + value.slice(3, 7);
-        }
-        e.target.value = value;
-    });
-
-    // フラッシュメッセージの自動消去
-    const flashMessages = document.querySelectorAll('.flash-message');
-    flashMessages.forEach(message => {
-        setTimeout(() => {
-            message.style.display = 'none';
-        }, 5000);
-    });
-</script>
 @endsection

@@ -12,9 +12,12 @@
 }
 
 .create-title {
-    font-size: 24px;
-    font-weight: 600;
-    color: #333333;
+    font-family: Inter;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    color: #000000;
     text-align: center;
     margin: 0 0 40px 0;
 }
@@ -136,6 +139,7 @@
     font-family: Inter;
     font-weight: 700;
     font-size: 30px;
+    color: #5F5F5F;
     border-bottom: 1px solid #5F5F5F;
     padding-bottom: 10px;
 }
@@ -160,7 +164,7 @@ label {
 
 /* フォームグループ */
 .form-group {
-    margin-bottom: 30px;
+    margin: 30px 0 30px 0;
 }
 
 /* カテゴリーエリア */
@@ -168,7 +172,7 @@ label {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    padding: 10px 0;
+    padding: 30px 0 0 10px;
 }
 
 /* カテゴリーボタン */
@@ -181,16 +185,23 @@ label {
 }
 
 .category-label {
-    width: 107px;
+    width: auto;
     height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid #FF5555;
+    padding: 0 15px;
+    border: 2px solid #FF5555;
     border-radius: 16px;
     background-color: #ffffff;
     color: #FF5555;
-    font-size: 12px;
+    font-family: Inter;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 100%;
+    letter-spacing: 0%;
+    text-align: center;
+    vertical-align: middle;
     cursor: pointer;
     transition: all 0.2s ease;
 }

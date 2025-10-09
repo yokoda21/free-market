@@ -4,6 +4,7 @@
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
+<link rel="stylesheet" href="{{ asset('css/verifi-email.css') }}">
 @endpush
 
 @section('content')
@@ -26,9 +27,12 @@
             <p class="message-line2">メール認証を完了してください。</p>
         </div>
 
+        <!-- Mailhogでの認証メール確認と再送 -->
         <div class="verification__actions">
             <div class="verification__button">
-                <button type="button" class="form__button-gray">認証はこちらから</button>
+                <a href="http://localhost:8025" target="_blank" class="form__button-gray">
+                    認証はこちらから
+                </a>
             </div>
 
             <div class="verification__resend">
@@ -40,96 +44,4 @@
         </div>
     </div>
 </div>
-
-<style>
-    .verification__content {
-        text-align: center;
-        max-width: 720px;
-        height: 58px;
-        margin: 0 auto;
-        padding: 40px 20px;
-    }
-
-    .verification__message {
-        font-family: Inter;
-        font-weight: 700;
-        font-style: Bold;
-        font-size: 24px;
-        leading-trim: NONE;
-        line-height: 100%;
-        letter-spacing: 0%;
-        text-align: center;
-        width: 720px;
-        height: 58px;
-
-    }
-
-    .verification__message p {
-        margin: 8px 0;
-    }
-
-    .verification__actions {
-        margin: 60px 0;
-    }
-
-    .verification__button {
-        margin-bottom: 40px;
-        margin-left: 80px;
-    }
-
-    .form__button-gray {
-        background-color: #D9D9D9;
-        border: 1px solid #000000;
-        padding: 15px 40px;
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: 24px;
-        font-weight: 700;
-        font-style: bold;
-        min-width: 200px;
-        text-align: center;
-
-    }
-
-    .form__button-gray:hover {
-        background-color: #666;
-    }
-
-    .verification__resend {
-        margin-top: 30px;
-    }
-
-    .resend__link {
-        background: none;
-        border: none;
-        color: #007bff;
-        text-decoration: underline;
-        cursor: pointer;
-        font-size: 20px;
-        padding: 0;
-        margin-left: 80px;
-    }
-
-    .resend__link:hover {
-        color: #0056b3;
-    }
-
-    .form__success {
-        background-color: #d4edda;
-        color: #155724;
-        border: 1px solid #c3e6cb;
-        padding: 15px;
-        border-radius: 4px;
-        margin-bottom: 20px;
-    }
-
-    .form__info {
-        background-color: #cce7ff;
-        color: #0c5460;
-        border: 1px solid #b0daff;
-        padding: 15px;
-        border-radius: 4px;
-        margin-bottom: 20px;
-    }
-</style>
 @endsection

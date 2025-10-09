@@ -11,7 +11,7 @@
     <div class="edit-profile-header">
         <h1>プロフィール設定</h1>
         @if(request()->has('first_time'))
-        <p class="first-time-message">プロフィール情報を設定してください</p>        
+        <p class="first-time-message">プロフィール情報を設定してください</p>
         @endif
     </div>
 
@@ -21,7 +21,7 @@
 
             <!-- プロフィール画像 -->
             <div class="form-group">
-                
+
                 <div class="profile-image-upload">
                     <div class="current-image">
                         @if($profile && $profile->profile_image)
@@ -87,7 +87,7 @@
 
             <!-- 送信ボタン -->
             <div class="form-actions">
-                <button type="submit" class="submit-btn">更新する</button>                
+                <button type="submit" class="submit-btn">更新する</button>
             </div>
         </form>
     </div>
@@ -116,15 +116,6 @@
             };
             reader.readAsDataURL(file);
         }
-    });
-
-    // 郵便番号フォーマット（自動ハイフン挿入）
-    document.getElementById('postal_code').addEventListener('input', function(e) {
-        let value = e.target.value.replace(/[^\d]/g, '');
-        if (value.length >= 4) {
-            value = value.slice(0, 3) + '-' + value.slice(3, 7);
-        }
-        e.target.value = value;
     });
 </script>
 @endsection
