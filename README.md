@@ -45,18 +45,18 @@ https://dashboard.stripe.com/test/apikeys
 
 テスト用カード番号：  
 ・カード番号：4242 4242 4242 4242  
-・有効期限：任意の未来の日付（例：12/34）
-・CVC：任意の3桁の数字（例：123）
-5. php artisan key:generate
-6. php artisan migrate
-7. php artisan db:seed
-8. 画像保存ディレクトリのシンボリックリンク作成
-php artisan storage:link
+・有効期限：任意の未来の日付（例：12/34）  
+・CVC：任意の3桁の数字（例：123）  
+5. php artisan key:generate  
+6. php artisan migrate  
+7. php artisan db:seed  
+8. 画像保存ディレクトリのシンボリックリンク作成  
+php artisan storage:link  
 
 ## 使用技術
-・PHP8.2.29
-・Laravel8.83.8
-・MySQL8.0.26
+・PHP8.2.29  
+・Laravel8.83.8  
+・MySQL8.0.26  
 
 ## ER図
 ![ER図](free-market02(背景白).png)
