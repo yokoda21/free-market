@@ -117,8 +117,8 @@
     cursor: not-allowed;
 }
 
-/* レスポンシブ対応 */
-@media (max-width: 768px) {
+/* レスポンシブ対応（PC専用 - 1400px対応）*/
+@media (max-width: 1400px) {
     .address-edit-form {
         width: 100%;
         max-width: 500px;

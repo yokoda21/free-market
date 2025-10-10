@@ -42,7 +42,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
-    // 既存のリレーション（そのまま）
+    // 既存のリレーション
     public function profile()
     {
         return $this->hasOne(Profile::class);
