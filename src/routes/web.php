@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\TradeController;
+use App\Http\Controllers\RatingController;
 use App\Http\Controllers\Auth\EmailVerificationController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
@@ -60,6 +62,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/purchase/address/{item_id}', [PurchaseController::class, 'editAddress'])->name('purchase.address');
     Route::post('/purchase/address/{item_id}', [PurchaseController::class, 'updateAddress'])->name('purchase.address.update');
     Route::post('/purchase/{item_id}', [PurchaseController::class, 'store'])->name('purchase.store');
+
+    // 取引チャット関連
+    Route::get('/trades', [TradeController::class, 'index'])->name('trades.index');
+    Route::get('/trades/{purchase}', [TradeController::class, 'show'])->name('trades.show');
+    Route::post('/trades/{purchase}/messages', [TradeController::class, 'storeMessage'])->name('trades.messages.store');
+    Route::patch('/trades/messages/{message}', [TradeController::class, 'updateMessage'])->name('trades.messages.update');
+    Route::delete('/trades/messages/{message}', [TradeController::class, 'destroyMessage'])->name('trades.messages.destroy');
+    Route::post('/trades/{purchase}/save-input', [TradeController::class, 'saveInput'])->name('trades.save-input');
+    Route::post('/trades/{purchase}/complete', [TradeController::class, 'complete'])->name('trades.complete');
+
+    // 評価関連
+    Route::post('/trades/{purchase}/rate', [RatingController::class, 'store'])->name('ratings.store');
 
     // ユーザー・プロフィール関連
     Route::get('/mypage', [UserController::class, 'profile'])->name('user.profile');

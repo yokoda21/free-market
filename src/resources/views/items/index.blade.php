@@ -21,6 +21,7 @@
         </div>
 
         
+    
 
         @if($items->count() > 0)
         <div class="item-index__items">

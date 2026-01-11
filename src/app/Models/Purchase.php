@@ -21,6 +21,22 @@ class Purchase extends Model
         'address',
         'building',
         'payment_method',
+        'is_completed',
+        'completed_at',
+        'buyer_evaluated',
+        'seller_evaluated',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'is_completed' => 'boolean',
+        'buyer_evaluated' => 'boolean',
+        'seller_evaluated' => 'boolean',
+        'completed_at' => 'datetime',
     ];
 
     /**
@@ -149,5 +165,114 @@ class Purchase extends Model
     public function scopeByPaymentMethod($query, $method)
     {
         return $query->where('payment_method', $method);
+    }
+
+    /**
+     * 取引メッセージ（1対多）
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function tradeMessages()
+    {
+        return $this->hasMany(TradeMessage::class)->orderBy('created_at', 'asc');
+    }
+
+    /**
+     * 評価（1対多）
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function ratings()
+    {
+        return $this->hasMany(Rating::class);
+    }
+
+    /**
+     * 購入者の評価を取得
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function buyerRating()
+    {
+        return $this->hasOne(Rating::class)->where('rater_id', $this->user_id);
+    }
+
+    /**
+     * 出品者の評価を取得
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function sellerRating()
+    {
+        return $this->hasOne(Rating::class)->where('rater_id', $this->item->user_id ?? null);
+    }
+
+    /**
+     * 未読メッセージ数を取得
+     *
+     * @param int $userId 対象ユーザーID
+     * @return int
+     */
+    public function getUnreadCountFor($userId)
+    {
+        return $this->tradeMessages()
+            ->where('sender_id', '!=', $userId)
+            ->where('is_read', false)
+            ->count();
+    }
+
+    /**
+     * 最新メッセージを取得
+     *
+     * @return \App\Models\TradeMessage|null
+     */
+    public function getLatestMessageAttribute()
+    {
+        return $this->tradeMessages()->latest()->first();
+    }
+
+    /**
+     * 取引完了済みのスコープ
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeCompleted($query)
+    {
+        return $query->where('is_completed', true);
+    }
+
+    /**
+     * 取引中のスコープ
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeInProgress($query)
+    {
+        return $query->where('is_completed', false);
+    }
+
+    /**
+     * 両者評価済みか確認
+     *
+     * @return bool
+     */
+    public function isBothEvaluated()
+    {
+        return $this->buyer_evaluated && $this->seller_evaluated;
+    }
+
+    /**
+     * 取引を完了する
+     *
+     * @return bool
+     */
+    public function complete()
+    {
+        return $this->update([
+            'is_completed' => true,
+            'completed_at' => now(),
+        ]);
     }
 }

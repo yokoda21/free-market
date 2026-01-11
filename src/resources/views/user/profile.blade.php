@@ -19,6 +19,20 @@
                 @endif
             </div>
             <h1 class="profile-name">{{ $user->name }}</h1>
+            @if($user->average_rating)
+            <div class="profile-rating">
+                <div class="profile-rating__stars">
+                    @for($i = 1; $i <= 5; $i++)
+                        @if($i <= $user->average_rating)
+                        <span class="star star--filled">★</span>
+                        @else
+                        <span class="star">☆</span>
+                        @endif
+                    @endfor
+                </div>
+                <span class="profile-rating__count">({{ $user->rating_count }})</span>
+            </div>
+            @endif
             <a href="{{ route('user.edit-profile') }}" class="edit-profile-btn">プロフィールを編集</a>
         </div>
     </div>
@@ -34,6 +48,41 @@
                 class="tab-button {{ $page === 'buy' ? 'active' : '' }}">
                 購入した商品
             </a>
+            <a href="{{ route('user.profile', ['page' => 'trading']) }}"
+                class="tab-button {{ $page === 'trading' ? 'active' : '' }}">
+                取引中の商品
+                @php
+                    // 購入した商品（取引中 OR 取引完了だが未評価）
+                    $purchasedTradingCount = \App\Models\Item::whereHas('purchase', function($q) {
+                        $q->where('user_id', Auth::id())
+                          ->where(function($q2) {
+                              $q2->where('is_completed', false)
+                                 ->orWhere(function($q3) {
+                                     $q3->where('is_completed', true)
+                                        ->where('buyer_evaluated', false);
+                                 });
+                          });
+                    })->count();
+                    
+                    // 出品した商品（取引中 OR 取引完了だが未評価）
+                    $soldTradingCount = Auth::user()->items()->where('is_sold', true)
+                        ->whereHas('purchase', function($q) {
+                            $q->where(function($q2) {
+                                $q2->where('is_completed', false)
+                                   ->orWhere(function($q3) {
+                                       $q3->where('is_completed', true)
+                                          ->where('seller_evaluated', false);
+                                   });
+                            });
+                        })
+                        ->count();
+                    
+                    $tradingCount = $purchasedTradingCount + $soldTradingCount;
+                @endphp
+                @if($tradingCount > 0)
+                <span class="tab-badge">{{ $tradingCount }}</span>
+                @endif
+            </a>
         </div>
     </div>
 
@@ -42,7 +91,15 @@
         @if($items->count() > 0)
         @foreach($items as $item)
         <div class="item-card">
-            <a href="{{ route('items.show', $item->id) }}" class="item-link">
+            @if($page === 'trading' && $item->purchase)
+                @php
+                    $unreadCount = $item->purchase->getUnreadCountFor(Auth::id());
+                @endphp
+                @if($unreadCount > 0)
+                <div class="unread-badge">{{ $unreadCount }}</div>
+                @endif
+            @endif
+            <a href="{{ ($page === 'trading' && $item->purchase) ? route('trades.show', $item->purchase->id) : route('items.show', $item->id) }}" class="item-link">
                 <div class="item-image">
                     @if($item->image_url)
                     @if(str_starts_with($item->image_url, 'http'))
@@ -57,20 +114,12 @@
                     @if($item->is_sold)
                     <div class="sold-label">Sold</div>
                     @endif
+
                 </div>
+            
 
                 <div class="item-info">
                     <h3 class="item-name">{{ $item->name }}</h3>
-
-                    @if($page === 'buy' && $item->purchase)
-                    <p class="purchase-date">購入日: {{ $item->purchase->created_at->format('Y年m月d日') }}</p>
-                    <p class="purchase-address">
-                        配送先: {{ $item->purchase->postal_code }} {{ $item->purchase->address }}
-                        @if($item->purchase->building)
-                        {{ $item->purchase->building }}
-                        @endif
-                    </p>
-                    @endif
                 </div>
             </a>
         </div>
@@ -80,9 +129,12 @@
             @if($page === 'sell')
             <p>出品した商品はありません</p>
             <a href="{{ route('items.create') }}" class="sell-btn">商品を出品する</a>
-            @else
+            @elseif($page === 'buy')
             <p>購入した商品はありません</p>
             <a href="{{ route('items.index') }}" class="browse-btn">商品を探す</a>
+            @elseif($page === 'trading')
+            <p>取引中の商品はありません</p>
+            <p class="no-items-hint">商品が購入されるとここに表示されます</p>
             @endif
         </div>
         @endif

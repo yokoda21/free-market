@@ -93,15 +93,60 @@ class UserController extends Controller
         $page = $request->query('page', 'sell');
 
         if ($page === 'sell') {
+            // 出品した商品（全て）
             $items = Item::where('user_id', $user->id)
                 ->orderBy('created_at', 'desc')
                 ->get();
         } elseif ($page === 'buy') {
+            // 購入した商品
             $items = Item::whereHas('purchase', function ($query) use ($user) {
                 $query->where('user_id', $user->id);
             })->with('purchase')
                 ->orderBy('created_at', 'desc')
                 ->get();
+        } elseif ($page === 'trading') {
+            // 取引中の商品（購入 + 出品）
+            // 条件：取引中 OR 取引完了だが未評価
+            
+            // 1. 自分が購入した商品（取引中 OR 取引完了だが未評価）
+            $purchasedItems = Item::whereHas('purchase', function ($query) use ($user) {
+                $query->where('user_id', $user->id)
+                      ->where(function ($q) {
+                          $q->where('is_completed', false)
+                            ->orWhere(function ($q2) {
+                                $q2->where('is_completed', true)
+                                   ->where('buyer_evaluated', false);
+                            });
+                      });
+            })->with(['purchase.tradeMessages' => function ($query) {
+                $query->latest()->limit(1);
+            }])
+                ->get();
+            
+            // 2. 自分が出品した商品（取引中 OR 取引完了だが未評価）
+            $soldItems = Item::where('user_id', $user->id)
+                ->where('is_sold', true)
+                ->whereHas('purchase', function ($query) {
+                    $query->where(function ($q) {
+                        $q->where('is_completed', false)
+                          ->orWhere(function ($q2) {
+                              $q2->where('is_completed', true)
+                                 ->where('seller_evaluated', false);
+                          });
+                    });
+                })
+                ->with(['purchase.tradeMessages' => function ($query) {
+                    $query->latest()->limit(1);
+                }])
+                ->get();
+            
+            // 3. 両方をマージして最新メッセージ順にソート（FN004対応）
+            $items = $purchasedItems->merge($soldItems)
+                ->sortByDesc(function ($item) {
+                    // 最新メッセージがあればその日時、なければ購入日時でソート
+                    $latestMessage = $item->purchase->tradeMessages->first();
+                    return $latestMessage ? $latestMessage->created_at : $item->purchase->created_at;
+                });
         } else {
             $items = Item::where('user_id', $user->id)
                 ->orderBy('created_at', 'desc')

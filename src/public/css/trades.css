@@ -1,0 +1,666 @@
+/* ==================== 取引チャット画面 ==================== */
+
+/* メインコンテナ - 2カラムレイアウト */
+.trade-chat-container {
+    display: flex;
+    min-height: calc(100vh - 82px);
+    max-width: 1512px;
+    margin: 0 auto;
+}
+
+/* ==================== サイドバー ==================== */
+.trade-sidebar {
+    width: 200px;
+    min-width: 200px;
+    background-color: #868686;
+    padding: 20px 15px;
+}
+
+.trade-sidebar__title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #FFFFFF;
+    margin-bottom: 20px;
+}
+
+.trade-sidebar__list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.trade-sidebar__item {
+    display: block;
+    padding: 10px 15px;
+    background-color: #FFFFFF;
+    border-radius: 4px;
+    text-decoration: none;
+    text-align: center;
+    color: #333;
+    font-size: 14px;
+    transition: background-color 0.3s;
+    overflow: hidden;
+}
+
+.trade-sidebar__item:hover {
+    background-color: #f0f0f0;
+}
+
+.trade-sidebar__name {
+    display: block;
+    color: #333;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.trade-sidebar__empty {
+    font-size: 13px;
+    color: #FFFFFF;
+    text-align: center;
+    padding: 20px 0;
+}
+
+/* ==================== メインエリア ==================== */
+.trade-main {
+    flex: 1;
+    background-color: #FFFFFF;
+    padding: 30px 40px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ヘッダー（タイトル + ボタン） */
+.trade-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    margin-left: -40px;
+    margin-right: -40px;
+    padding-left: 40px;
+    padding-right: 40px;
+    border-bottom: 2px solid #5F5F5F;
+}
+
+.trade-header__user {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.trade-header__avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #D9D9D9;
+    overflow: hidden;
+}
+
+.trade-header__avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.trade-header__title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #000000;
+}
+
+.trade-complete__button {
+    padding: 12px 24px;
+    background-color: #FF8282;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.trade-complete__button:hover {
+    background-color: #ff6b6b;
+}
+
+.trade-complete__button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* ==================== 商品情報エリア ==================== */
+.trade-product {
+    display: flex;
+    gap: 30px;
+    padding-bottom: 20px;
+    margin-left: -40px;
+    margin-right: -40px;
+    padding-left: 40px;
+    padding-right: 40px;
+    border-bottom: 2px solid #5F5F5F;
+}
+
+.trade-product__image {
+    width: 180px;
+    height: 180px;
+    flex-shrink: 0;
+    background-color: #D9D9D9;
+}
+
+.trade-product__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.trade-product__info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.trade-product__name {
+    font-family: Inter, sans-serif;
+    font-size: 48px;
+    font-weight: 700;
+    color: #000000;
+    margin-bottom: 10px;
+    line-height: 1;
+}
+
+.trade-product__price {
+    font-size: 24px;
+    font-weight: 400;
+    color: #000000;
+}
+
+/* ==================== チャットエリア ==================== */
+.trade-chat {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ユーザー情報（相手） */
+.trade-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.trade-user__avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #D9D9D9;
+    overflow: hidden;
+}
+
+.trade-user__avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.trade-user__name {
+    font-size: 16px;
+    font-weight: bold;
+    color: #000000;
+}
+
+/* メッセージ一覧 */
+.trade-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 0;
+    min-height: 300px;
+    max-height: 400px;
+}
+
+.trade-message {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.trade-message--own {
+    align-items: flex-end;
+}
+
+.trade-message--partner {
+    align-items: flex-start;
+}
+
+/* ヘッダー（日時 + ユーザー名 + アバター） */
+.trade-message__header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+}
+
+.trade-message--own .trade-message__header {
+    flex-direction: row;
+}
+
+.trade-message--partner .trade-message__header {
+    flex-direction: row-reverse;
+}
+
+.trade-message__time {
+    font-size: 12px;
+    color: #999;
+}
+
+.trade-message__sender {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+}
+
+.trade-message__avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #D9D9D9;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.trade-message__avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* メッセージ本文 */
+.trade-message__content {
+    max-width: 70%;
+}
+
+.trade-message__body {
+    background-color: #D9D9D9;
+    padding: 15px 20px;
+    border-radius: 4px;
+    min-width: 300px;
+}
+
+.trade-message__text {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.5;
+    color: #000000;
+    word-wrap: break-word;
+    text-align: center;
+}
+
+.trade-message__image {
+    margin-top: 8px;
+}
+
+.trade-message__image img {
+    max-width: 200px;
+    border-radius: 4px;
+}
+
+/* 編集・削除ボタン */
+.trade-message__actions {
+    display: flex;
+    gap: 16px;
+    margin-top: 6px;
+    justify-content: flex-end;
+}
+
+.trade-message--partner .trade-message__actions {
+    justify-content: flex-start;
+}
+
+.trade-message__edit,
+.trade-message__delete {
+    padding: 0;
+    font-size: 15px;
+    font-weight: 400;
+    border: none;
+    background: none;
+    color: #5F5F5F;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.trade-message__edit:hover,
+.trade-message__delete:hover {
+    color: #333;
+}
+
+/* メッセージ編集フォーム */
+.trade-message__edit-form {
+    margin-top: 8px;
+}
+
+.trade-message__edit-textarea {
+    width: 100%;
+    min-height: 80px;
+    padding: 10px;
+    border: 1px solid #5F5F5F;
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: inherit;
+    resize: vertical;
+}
+
+.trade-message__edit-textarea:focus {
+    outline: none;
+    border-color: #FF5555;
+}
+
+.trade-message__edit-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+    justify-content: flex-end;
+}
+
+.trade-message__edit-save {
+    padding: 6px 16px;
+    background-color: #FF5555;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.trade-message__edit-save:hover {
+    background-color: #e64545;
+}
+
+.trade-message__edit-cancel {
+    padding: 6px 16px;
+    background-color: #f0f0f0;
+    color: #333;
+    border: none;
+    border-radius: 4px;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.trade-message__edit-cancel:hover {
+    background-color: #e0e0e0;
+}
+
+/* ==================== メッセージ入力エリア ==================== */
+.trade-input {
+    margin-top: auto;
+    padding-top: 20px;
+}
+
+.error-messages {
+    background-color: #ffebee;
+    border: 1px solid #ef5350;
+    border-radius: 4px;
+    padding: 12px;
+    margin-bottom: 16px;
+}
+
+.error-message {
+    color: #d32f2f;
+    font-size: 14px;
+    margin: 4px 0;
+}
+
+.trade-input__form {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.trade-input__field {
+    flex: 1;
+    min-width: 0;
+}
+
+.trade-input__textarea {
+    width: 100%;
+    height: 44px;
+    padding: 10px 15px;
+    border: 1px solid #5F5F5F;
+    border-radius: 4px;
+    font-family: Inter, sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #000;
+    resize: none;
+    line-height: 1.2;
+    box-sizing: border-box;
+}
+
+.trade-input__textarea::placeholder {
+    color: #7B7B7B;
+    font-weight: 700;
+}
+
+.trade-input__textarea:focus {
+    outline: none;
+    border-color: #333;
+}
+
+.trade-input__image-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 143px;
+    height: 44px;
+    border: 2px solid #FF5555;
+    border-radius: 10px;
+    background-color: #FFFFFF;
+    color: #FF5555;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    flex-shrink: 0;
+}
+
+.trade-input__image-btn:hover {
+    background-color: #fff5f5;
+}
+
+.trade-input__image-input {
+    display: none;
+}
+
+.trade-input__submit {
+    width: 80px;
+    height: 61px;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.trade-input__submit img {
+    width: 80px;
+    height: 61px;
+    object-fit: contain;
+}
+
+.trade-input__submit:hover {
+    opacity: 0.7;
+}
+
+/* 文字数カウンター（入力欄の下に表示） */
+.trade-input__counter {
+    text-align: right;
+    font-size: 12px;
+    color: #999;
+    margin-top: 4px;
+}
+
+/* 選択されたファイル名表示 */
+.trade-input__image-name {
+    font-size: 12px;
+    color: #666;
+    margin-top: 4px;
+}
+
+/* ==================== 取引中商品一覧（別ページ用） ==================== */
+.trades-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.trades-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.trades-tabs {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #e5e5e5;
+}
+
+.trades-tab {
+    padding: 12px 24px;
+    background: none;
+    border: none;
+    font-size: 16px;
+    color: #636769;
+    cursor: pointer;
+    position: relative;
+    transition: color 0.3s;
+}
+
+.trades-tab.active {
+    color: #000;
+    font-weight: bold;
+}
+
+.trades-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: #FF5555;
+}
+
+.trades-list {
+    display: grid;
+    gap: 20px;
+}
+
+.trade-item {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #333;
+    transition: box-shadow 0.3s;
+}
+
+.trade-item:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.trade-item__image {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    flex-shrink: 0;
+}
+
+.trade-item__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.unread-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #FF5555;
+    color: white;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.trade-item__info {
+    flex: 1;
+}
+
+.trade-item__name {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.trade-item__seller {
+    font-size: 14px;
+    color: #636769;
+    margin-bottom: 8px;
+}
+
+.trade-item__message {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 4px;
+}
+
+.trade-item__time {
+    font-size: 12px;
+    color: #999;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #636769;
+}
+
+/* プロフィール評価表示 */
+.profile-rating {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 8px 0 16px;
+}
+
+.profile-rating__stars {
+    display: flex;
+    gap: 2px;
+}
+
+.star {
+    font-size: 18px;
+    color: #D9D9D9;
+}
+
+.star--filled {
+    color: #FFF048;
+}
+
+.profile-rating__count {
+    font-size: 14px;
+    color: #636769;
+}

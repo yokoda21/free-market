@@ -245,4 +245,35 @@ class Item extends Model
         
         return $query;
     }
+
+    /**
+     * 取引中か確認
+     *
+     * @return bool
+     */
+    public function isInTrade()
+    {
+        return $this->purchase && !$this->purchase->is_completed;
+    }
+
+    /**
+     * 取引完了済みか確認
+     *
+     * @return bool
+     */
+    public function isTradeCompleted()
+    {
+        return $this->purchase && $this->purchase->is_completed;
+    }
+
+    /**
+     * 指定ユーザーがこの商品を購入したか確認
+     *
+     * @param  int  $userId
+     * @return bool
+     */
+    public function isPurchasedBy($userId)
+    {
+        return $this->purchase && $this->purchase->user_id === $userId;
+    }
 }

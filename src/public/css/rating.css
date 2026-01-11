@@ -1,0 +1,118 @@
+/* ==================== 評価モーダル ==================== */
+.rating-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.rating-modal__content {
+    width: 598px;
+    background-color: #FDFCE6;
+    border: 1px solid #000000;
+    border-radius: 15px;
+    padding: 40px;
+    text-align: center;
+}
+
+.rating-modal__title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 20px;
+}
+
+.rating-modal__subtitle {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+/* 星評価 */
+.rating-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.rating-stars {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.rating-stars input {
+    display: none;
+}
+
+.rating-stars label {
+    font-size: 60px;
+    color: #D9D9D9;
+    cursor: pointer;
+    transition: color 0.2s;
+    line-height: 1;
+}
+
+/* ホバー時と選択時の色 */
+.rating-stars label:hover,
+.rating-stars label:hover ~ label,
+.rating-stars input:checked ~ label {
+    color: #FFF048;
+}
+
+/* 送信ボタン */
+.rating-submit {
+    width: 127px;
+    height: 49px;
+    background-color: #FF8282;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.rating-submit:hover {
+    background-color: #ff6b6b;
+}
+
+/* コメント欄（非表示 - Figmaにはなさそうだが、機能要件で必要なら残す） */
+.rating-comment {
+    display: none;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.rating-comment__label {
+    display: block;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 8px;
+    text-align: left;
+}
+
+.rating-comment__textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    resize: vertical;
+}
+
+.rating-comment__textarea:focus {
+    outline: none;
+    border-color: #FF5555;
+}
