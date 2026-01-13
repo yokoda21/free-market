@@ -200,17 +200,9 @@
                 <label for="star1">★</label>
             </div>
 
-            <div class="rating-comment">
-                <label for="comment" class="rating-comment__label">コメント（任意）</label>
-                <textarea
-                    name="comment"
-                    id="comment"
-                    class="rating-comment__textarea"
-                    placeholder="取引の感想をお聞かせください"
-                    maxlength="1000"></textarea>
+            <div class="rating-button-area">
+                <button type="submit" class="rating-submit">送信する</button>
             </div>
-
-            <button type="submit" class="rating-submit">送信する</button>
         </form>
     </div>
 </div>

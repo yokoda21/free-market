@@ -64,7 +64,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/purchase/{item_id}', [PurchaseController::class, 'store'])->name('purchase.store');
 
     // 取引チャット関連
-    Route::get('/trades', [TradeController::class, 'index'])->name('trades.index');
     Route::get('/trades/{purchase}', [TradeController::class, 'show'])->name('trades.show');
     Route::post('/trades/{purchase}/messages', [TradeController::class, 'storeMessage'])->name('trades.messages.store');
     Route::patch('/trades/messages/{message}', [TradeController::class, 'updateMessage'])->name('trades.messages.update');

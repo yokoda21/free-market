@@ -170,9 +170,9 @@
     color: #666666;
 }
 
-/* レスポンシブ対応（PC専用 - 1400px対応） */
+/* レスポンシブ対応（PC専用 - 1540px対応） */
 
-@media screen and (max-width: 1400px) {
+@media screen and (max-width: 1540px) {
     .item-card {
         width: 290px;
         /* 固定幅維持 */
@@ -183,5 +183,55 @@
         gap: 32px;
         justify-content: center;
         max-width: 1200px;
+    }
+}
+
+/* タブレット対応 (768-850px) */
+@media screen and (max-width: 850px) {
+    /* タブメニュー */
+    .item-tabs__menu {
+        padding: 0 20px;
+        margin-top: 30px;
+    }
+
+    .item-tabs__menu-item {
+        margin-right: 30px;
+    }
+
+    .item-tabs__menu-item a {
+        font-size: 16px;
+    }
+
+    /* 商品グリッド */
+    .item-index__items {
+        gap: 20px;
+        padding: 0 15px;
+        margin: 40px auto;
+        justify-content: center;
+    }
+
+    .item-card {
+        width: calc((100% - 20px) / 2);
+        min-width: 180px;
+        max-width: 220px;
+        height: auto;
+    }
+
+    .item-card__img {
+        height: 180px;
+    }
+
+    .item-card__name {
+        font-size: 16px;
+        padding: 8px;
+    }
+
+    /* アイテムなし */
+    .no-items {
+        padding: 40px 15px;
+    }
+
+    .no-items p {
+        font-size: 16px;
     }
 }

@@ -557,3 +557,105 @@
     }
 
 }
+
+/* タブレット対応 (768-850px) */
+@media screen and (max-width: 850px) {
+    .detail-main {
+        height: auto;
+        padding: 30px 15px;
+    }
+
+    .detail-container {
+        max-width: 100%;
+    }
+
+    /* 1カラムレイアウト */
+    .item-detail {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    /* 商品画像 */
+    .item-image {
+        width: 100%;
+        min-height: auto;
+    }
+
+    .item-image__img {
+        width: 100%;
+        height: auto;
+        max-width: 400px;
+        margin: 0 auto;
+        display: block;
+    }
+
+    /* 商品情報 */
+    .item-info {
+        width: 100%;
+        height: auto;
+        margin: 0;
+        padding: 0 10px;
+    }
+
+    .item-name {
+        font-size: 28px;
+    }
+
+    .item-brand {
+        width: 100%;
+        font-size: 16px;
+    }
+
+    .item-price {
+        width: 100%;
+    }
+
+    .price {
+        font-size: 32px;
+    }
+
+    .price-tax {
+        font-size: 20px;
+    }
+
+    /* アクション */
+    .stats-item {
+        margin-left: 20px;
+    }
+
+    /* ボタン */
+    .btn-purchase,
+    .btn-purchase-login,
+    .btn-comment-login,
+    .btn-comment-submit {
+        width: 100%;
+        max-width: 400px;
+        font-size: 20px;
+    }
+
+    .sold-out,
+    .own-item-text,
+    .purchase-login-required,
+    .comment-disabled,
+    .comment-login-required {
+        width: 100%;
+        max-width: 400px;
+        height: auto;
+        min-height: 60px;
+    }
+
+    /* コメントセクション */
+    .comments-section {
+        width: 100%;
+        height: auto;
+    }
+
+    .comment-form {
+        width: 100%;
+        height: auto;
+    }
+
+    .form-textarea {
+        width: 100%;
+    }
+}

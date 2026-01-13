@@ -84,3 +84,49 @@
     padding: 15px;
     border-radius: 4px;
 }
+
+/* レスポンシブ対応（PC専用 - 1399px対応）*/
+@media screen and (max-width: 1399px) {
+    .verification__message {
+        width: 100%;
+        max-width: 600px;
+    }
+
+    .form__success {
+        width: 100%;
+        max-width: 600px;
+    }
+}
+
+/* タブレット対応 (768-850px) */
+@media screen and (max-width: 850px) {
+    .verification__content {
+        padding: 30px 15px;
+    }
+
+    .verification__message {
+        width: 100%;
+        height: auto;
+        font-size: 18px;
+    }
+
+    .verification__button {
+        margin: 60px auto 30px auto;
+    }
+
+    .form__button-gray {
+        font-size: 18px;
+        padding: 12px 30px;
+        min-width: 150px;
+    }
+
+    .resend__link {
+        font-size: 16px;
+    }
+
+    .form__success,
+    .form__info {
+        width: 100%;
+        padding: 12px;
+    }
+}

@@ -14,38 +14,51 @@
 
 .rating-modal__content {
     width: 598px;
+    height: 367px;
     background-color: #FDFCE6;
     border: 1px solid #000000;
     border-radius: 15px;
-    padding: 40px;
-    text-align: center;
+    padding: 30px 40px;
+    box-sizing: border-box;
 }
 
 .rating-modal__title {
-    font-size: 28px;
-    font-weight: bold;
+    font-family: Inter, sans-serif;
+    font-size: 35px;
+    font-weight: 400;
     color: #000000;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    margin-left: -40px;
+    margin-right: -40px;
+    padding-left: 40px;
+    padding-right: 40px;
+    border-bottom: 1px solid #000000;
+    line-height: 1;
+    text-align: left;
 }
 
 .rating-modal__subtitle {
-    font-size: 16px;
-    color: #333;
-    margin-bottom: 30px;
+    font-family: Inter, sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: #868686;
+    margin-bottom: 25px;
+    line-height: 1;
+    text-align: left;
 }
 
 /* 星評価 */
 .rating-form {
     display: flex;
     flex-direction: column;
-    align-items: center;
 }
 
 .rating-stars {
     display: flex;
     flex-direction: row-reverse;
-    justify-content: center;
-    gap: 10px;
+    justify-content: flex-start;
+    gap: 5px;
     margin-bottom: 30px;
 }
 
@@ -54,11 +67,13 @@
 }
 
 .rating-stars label {
-    font-size: 60px;
+    font-size: 80px;
     color: #D9D9D9;
     cursor: pointer;
     transition: color 0.2s;
     line-height: 1;
+    width: 100px;
+    text-align: center;
 }
 
 /* ホバー時と選択時の色 */
@@ -66,6 +81,19 @@
 .rating-stars label:hover ~ label,
 .rating-stars input:checked ~ label {
     color: #FFF048;
+}
+
+/* 送信ボタンエリア */
+.rating-button-area {
+    margin-top: 20px;
+    padding-top: 15px;
+    margin-left: -40px;
+    margin-right: -40px;
+    padding-left: 40px;
+    padding-right: 40px;
+    border-top: 1px solid #000000;
+    display: flex;
+    justify-content: flex-end;
 }
 
 /* 送信ボタン */
@@ -76,43 +104,96 @@
     color: #FFFFFF;
     border: none;
     border-radius: 5px;
-    font-size: 16px;
-    font-weight: bold;
+    font-family: Inter, sans-serif;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1;
     cursor: pointer;
     transition: background-color 0.3s;
+    padding: 0;
 }
 
 .rating-submit:hover {
     background-color: #ff6b6b;
 }
 
-/* コメント欄（非表示 - Figmaにはなさそうだが、機能要件で必要なら残す） */
-.rating-comment {
-    display: none;
-    width: 100%;
-    margin-bottom: 20px;
+/* PC対応 (1400px以下) */
+@media screen and (max-width: 1400px) {
+    .rating-modal__content {
+        width: 550px;
+        height: auto;
+        min-height: 340px;
+        padding: 25px 35px;
+    }
+
+    .rating-modal__title {
+        font-size: 30px;
+        margin-left: -35px;
+        margin-right: -35px;
+        padding-left: 35px;
+        padding-right: 35px;
+    }
+
+    .rating-stars label {
+        font-size: 70px;
+        width: 85px;
+    }
+
+    .rating-button-area {
+        margin-left: -35px;
+        margin-right: -35px;
+        padding-left: 35px;
+        padding-right: 35px;
+    }
 }
 
-.rating-comment__label {
-    display: block;
-    font-size: 14px;
-    color: #333;
-    margin-bottom: 8px;
-    text-align: left;
-}
+/* タブレット対応 (768-850px) */
+@media screen and (max-width: 850px) {
+    .rating-modal__content {
+        width: 90%;
+        max-width: 500px;
+        height: auto;
+        min-height: auto;
+        padding: 20px 25px;
+    }
 
-.rating-comment__textarea {
-    width: 100%;
-    min-height: 100px;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 14px;
-    font-family: inherit;
-    resize: vertical;
-}
+    .rating-modal__title {
+        font-size: 24px;
+        margin-bottom: 12px;
+        padding-bottom: 12px;
+        margin-left: -25px;
+        margin-right: -25px;
+        padding-left: 25px;
+        padding-right: 25px;
+    }
 
-.rating-comment__textarea:focus {
-    outline: none;
-    border-color: #FF5555;
+    .rating-modal__subtitle {
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
+
+    .rating-stars {
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+    .rating-stars label {
+        font-size: 50px;
+        width: 60px;
+    }
+
+    .rating-button-area {
+        margin-top: 15px;
+        padding-top: 12px;
+        margin-left: -25px;
+        margin-right: -25px;
+        padding-left: 25px;
+        padding-right: 25px;
+    }
+
+    .rating-submit {
+        width: 110px;
+        height: 44px;
+        font-size: 18px;
+    }
 }

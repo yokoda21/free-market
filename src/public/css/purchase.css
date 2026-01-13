@@ -329,7 +329,6 @@
     transition: background-color 0.3s ease;
 }
 
-
 /* レスポンシブ対応（PC専用 - 1400px対応）*/
 @media (max-width: 1400px) {
     .purchase-form {
@@ -345,5 +344,106 @@
     .summary-box {
         width: 100%;
         max-width: 440px;
+    }
+}
+
+/* タブレット対応 (768-850px) */
+@media screen and (max-width: 850px) {
+    .purchase-container {
+        padding: 30px 15px;
+        margin: 20px auto;
+    }
+
+    .purchase-form {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    /* 左セクション */
+    .left-section {
+        max-width: 100%;
+    }
+
+    .item-card {
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .item-image {
+        width: 150px;
+        height: 150px;
+    }
+
+    .item-info {
+        margin: 0;
+        text-align: center;
+    }
+
+    .item-name {
+        font-size: 22px;
+    }
+
+    .item-price {
+        font-size: 22px;
+    }
+
+    /* 支払い方法 */
+    .payment-method {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .payment-method h3 {
+        margin-left: 0;
+        font-size: 18px;
+    }
+
+    .custom-dropdown {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .dropdown-selected {
+        width: 100%;
+    }
+
+    /* 配送先 */
+    .shipping-info {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .shipping-info h3 {
+        margin-left: 0;
+        font-size: 18px;
+    }
+
+    .address-info {
+        width: 100%;
+        margin-left: 0;
+        font-size: 16px;
+    }
+
+    /* 右セクション */
+    .right-section {
+        width: 100%;
+    }
+
+    .summary-box {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+    }
+
+    .summary-item span {
+        font-size: 18px;
+        padding: 15px;
+    }
+
+    .purchase-btn {
+        font-size: 16px;
+        height: 50px;
     }
 }
