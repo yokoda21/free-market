@@ -3,19 +3,21 @@
 
 ## プロジェクト概要
 このフリマアプリは、ユーザーが商品を出品・購入できるフリマアプリケーションです。  
-会員登録、商品の出品・検索・購入、いいね機能、コメント機能を備えています。  
+会員登録、商品の出品・検索・購入、いいね機能、コメント機能、取引チャット機能、取引評価機能を備えています。  
 応用機能として、メール認証（MailHog）を実装しています。支払い方法はコンビニ支払いとStripe決済（カード支払い）を実装しています。
 
 ## 環境構築
 ### Dockerビルド
-1. 'git clone git@github.com:yokoda21/free-market.git
+1. 'git clone git@github.com:yokoda21/free-market.git'
 2. docker-compose up -d --build
 *MySQLはOSによって起動しない場合があるのでそれぞれのPCに合わせてdocker-compose.ymlファイルを編集してください。
 
 ### Laravel環境構築
 1. docker-compose exec php bash
 2. composer install
-3. 環境変数の設定 「.env.example」ファイルを 「.env」ファイルに命名を変更。または、新しく.envファイルを作成、.envに以下の環境変数を追加  
+3. 環境変数の設定
+「.env.example」ファイルを「.env」ファイルにコピー、または新規作成し、以下を設定：
+```env
 ・DB_CONNECTION=mysql  
 ・DB_HOST=mysql  
 ・DB_PORT=3306  
@@ -35,7 +37,8 @@
 
 4. Stripe決済の設定を.envに追加  
 ・STRIPE_PUBLIC_KEY=your_stripe_public_key  
-・STRIPE_SECRET_KEY=your_stripe_secret_key  
+・STRIPE_SECRET_KEY=your_stripe_secret_key
+```
 
 ※ Stripeのテストキーは以下から取得してください：  
 https://dashboard.stripe.com/test/apikeys
@@ -51,12 +54,28 @@ https://dashboard.stripe.com/test/apikeys
 php artisan storage:link  
 
 ## 使用技術
-・PHP8.2.29  
-・Laravel8.83.8  
-・MySQL8.0.26  
+・PHP 8.2.29
+・Laravel 8.83.8
+・MySQL 8.0.26
+・Docker / Docker Compose
+・Stripe API（決済処理）
+・MailHog（メール送信テスト）
 
 ## ER図
-![ER図](free-market02(背景白).png)
+![ER図](free-market03(背景白テーブル追加).png)
+
+**主要テーブル：**
+- users（ユーザー）
+- profiles（プロフィール）
+- items（商品）
+- categories（カテゴリー）
+- conditions（商品状態）
+- item_categories（商品-カテゴリー中間テーブル）
+- likes（いいね）
+- comments（コメント）
+- purchases（購入情報・取引管理）
+- trade_messages（取引メッセージ）
+- ratings（評価）
 
 ## URL
 ・開発環境：http://localhost/  
@@ -76,10 +95,15 @@ php artisan storage:link
 | テスト次郎 | test1@example.com | password | 一般テスト用 |
 
 ※ テストアカウントもメール認証が必要です。
+**出品商品：**
+- 出品者太郎：腕時計、HDD、玉ねぎ3束、革靴、ノートPC（5商品）
+- 購入者花子：マイク、ショルダーバッグ、タンブラー、コーヒーミル、メイクセット（5商品）
+- テスト次郎：出品なし
 
 ### 使用例
 - **商品出品テスト**：seller1@example.com でログイン
-- **商品購入テスト**：buyer1@example.com でログイン
+- **商品購入・取引チャット**：buyer1@example.com でログイン → 商品購入 → マイページの「取引中の商品」から取引チャット
+- **評価機能テスト**：取引完了後、購入者・出品者それぞれで評価を投稿
 - **いいね・コメント機能**：どのアカウントでもOK
 
 ## 注意事項
@@ -87,6 +111,16 @@ php artisan storage:link
 ### メール認証について
 - 会員登録後、メール認証が必要です
 - MailHogで認証リンクを確認してください：http://localhost:8025/
+
+### 取引チャット機能について
+- 商品購入後、マイページの「取引中の商品」タブから利用可能
+- メッセージは400文字以内、画像添付可（1MBまで）
+- 未読メッセージは赤いバッジで表示
+- 最新メッセージのある取引が自動的に左側（先頭）に表示
+
+### 評価機能について
+- 取引完了後、購入者・出品者の双方が評価可能
+- 5段階評価
 
 ### Stripe決済について
 - テスト環境では、実際の課金は発生しません
