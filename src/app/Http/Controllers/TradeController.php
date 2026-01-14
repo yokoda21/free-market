@@ -196,8 +196,7 @@ class TradeController extends Controller
 
         // 評価画面へリダイレクト（モーダル表示）
         return redirect()->route('trades.show', $purchase)
-            ->with('show_rating_modal', true)
-            ->with('success', '取引を完了しました。出品者を評価してください。');
+            ->with('show_rating_modal', true);
     }
 
     /**

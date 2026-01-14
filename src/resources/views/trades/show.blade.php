@@ -115,7 +115,7 @@
                                 <form action="{{ route('trades.messages.update', $message->id) }}" method="POST">
                                     @csrf
                                     @method('PATCH')
-                                    <textarea name="message" class="trade-message__edit-textarea" maxlength="400" required>{{ $message->message }}</textarea>
+                                    <textarea name="message" class="trade-message__edit-textarea" required>{{ $message->message }}</textarea>
                                     <div class="trade-message__edit-actions">
                                         <button type="submit" class="trade-message__edit-save">保存</button>
                                         <button type="button" class="trade-message__edit-cancel" onclick="cancelEdit({{ $message->id }})">キャンセル</button>

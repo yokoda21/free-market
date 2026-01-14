@@ -25,7 +25,7 @@ class TradeMessageRequest extends FormRequest
     {
         return [
             'message' => ['required', 'string', 'max:400'],
-            'image' => ['nullable', 'image', 'mimes:jpeg,png', 'max:10240'], // 10MB
+            'image' => ['nullable', 'image', 'mimes:jpeg,png', 'max:1024'], // 1MB
         ];
     }
 
@@ -41,7 +41,7 @@ class TradeMessageRequest extends FormRequest
             'message.max' => '本文は400文字以内で入力してください',
             'image.image' => '画像ファイルをアップロードしてください',
             'image.mimes' => '「.png」または「.jpeg」形式でアップロードしてください',
-            'image.max' => '画像サイズは10MB以内にしてください',
+            'image.max' => '画像サイズは1MB以内にしてください',
         ];
     }
 }

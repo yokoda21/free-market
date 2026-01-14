@@ -9,6 +9,7 @@ use App\Http\Requests\ProfileRequest;
 use App\Models\User;
 use App\Models\Profile;
 use App\Models\Item;
+use App\Models\TradeMessage;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -189,12 +190,4 @@ class UserController extends Controller
 
         return redirect()->route('user.profile')->with('success', 'プロフィールを更新しました');
     }
-
-
-    public function getLikedItems() {}
-    public function getPurchaseHistory() {}
-    public function getSellingItems() {}
-    public function getCommentedItems() {}
-    public function uploadProfileImage(Request $request) {}
-    public function search(Request $request) {}
 }
