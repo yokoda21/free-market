@@ -14,7 +14,12 @@ class ItemsTableSeeder extends Seeder
      */
     public function run()
     {
+        // 案件シート要件:
+        // - ユーザー1（出品者太郎）: CO01〜CO05を出品
+        // - ユーザー2（購入者花子）: CO06〜CO10を出品
+        // - ユーザー3（テスト次郎）: 何も紐づけない
         $items = [
+            // CO01〜CO05: 出品者太郎（user_id = 1）
             [
                 'user_id' => 1, // 出品者太郎
                 'name' => '腕時計',
@@ -26,7 +31,7 @@ class ItemsTableSeeder extends Seeder
                 'is_sold' => false,
             ],
             [
-                'user_id' => 2, // 購入者花子
+                'user_id' => 1, // 出品者太郎
                 'name' => 'HDD',
                 'description' => '高速で信頼性の高いハードディスク',
                 'price' => 5000,
@@ -36,7 +41,7 @@ class ItemsTableSeeder extends Seeder
                 'is_sold' => false,
             ],
             [
-                'user_id' => 3, // テスト次郎
+                'user_id' => 1, // 出品者太郎
                 'name' => '玉ねぎ3束',
                 'description' => '新鮮な玉ねぎ3束のセット',
                 'price' => 300,
@@ -56,7 +61,7 @@ class ItemsTableSeeder extends Seeder
                 'is_sold' => false,
             ],
             [
-                'user_id' => 2, // 購入者花子
+                'user_id' => 1, // 出品者太郎
                 'name' => 'ノートPC',
                 'description' => '高性能なノートパソコン',
                 'price' => 45000,
@@ -65,8 +70,9 @@ class ItemsTableSeeder extends Seeder
                 'image_url' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Living+Room+Laptop.jpg',
                 'is_sold' => false,
             ],
+            // CO06〜CO10: 購入者花子（user_id = 2）
             [
-                'user_id' => 3, // テスト次郎
+                'user_id' => 2, // 購入者花子
                 'name' => 'マイク',
                 'description' => '高音質のレコーディング用マイク',
                 'price' => 8000,
@@ -76,7 +82,7 @@ class ItemsTableSeeder extends Seeder
                 'is_sold' => false,
             ],
             [
-                'user_id' => 1, // 出品者太郎
+                'user_id' => 2, // 購入者花子
                 'name' => 'ショルダーバッグ',
                 'description' => 'おしゃれなショルダーバッグ',
                 'price' => 3500,
@@ -96,7 +102,7 @@ class ItemsTableSeeder extends Seeder
                 'is_sold' => false,
             ],
             [
-                'user_id' => 3, // テスト次郎
+                'user_id' => 2, // 購入者花子
                 'name' => 'コーヒーミル',
                 'description' => '手動のコーヒーミル',
                 'price' => 4000,
@@ -106,7 +112,7 @@ class ItemsTableSeeder extends Seeder
                 'is_sold' => false,
             ],
             [
-                'user_id' => 1, // 出品者太郎
+                'user_id' => 2, // 購入者花子
                 'name' => 'メイクセット',
                 'description' => '便利なメイクアップセット',
                 'price' => 2500,

@@ -13,7 +13,11 @@
         <div class="item-detail">
             <!-- 商品画像 (左側に表示）-->
             <div class="item-image">
+                @if(str_starts_with($item->image_url, 'http'))
+                <img src="{{ $item->image_url }}" alt="{{ $item->name }}" class="item-image__img">
+                @else
                 <img src="{{ asset('storage/' . $item->image_url) }}" alt="{{ $item->name }}" class="item-image__img">
+                @endif
             </div>
 
             <!-- 商品情報 （右側に表示）-->

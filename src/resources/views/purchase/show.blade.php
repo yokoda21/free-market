@@ -16,7 +16,11 @@
             <!-- 商品カード -->
             <div class="item-card">
                 <div class="item-image">
+                    @if(str_starts_with($item->image_url, 'http'))
+                    <img src="{{ $item->image_url }}" alt="{{ $item->name }}">
+                    @else
                     <img src="{{ asset('storage/' . $item->image_url) }}" alt="{{ $item->name }}">
+                    @endif
                 </div>
                 <div class="item-info">
                     <h2 class="item-name">{{ $item->name }}</h2>

@@ -45,7 +45,7 @@
             @if($isBuyer && !$purchase->is_completed)
             <form action="{{ route('trades.complete', $purchase->id) }}" method="POST" id="complete-form">
                 @csrf
-                <button type="submit" class="trade-complete__button" id="complete-button" onclick="return confirmComplete(this)">
+                <button type="submit" class="trade-complete__button" id="complete-button">
                     取引を完了する
                 </button>
             </form>
@@ -153,15 +153,11 @@
 
                 <form action="{{ route('trades.messages.store', $purchase->id) }}" method="POST" enctype="multipart/form-data" class="trade-input__form">
                     @csrf
-                    <div class="trade-input__field">
-                        <input
-                            type="text"
-                            name="message"
-                            class="trade-input__textarea"
-                            placeholder="取引メッセージを記入してください"
-                            maxlength="400"
-                            value="{{ old('message', $oldMessage) }}">
-                    </div>
+                    <textarea
+                        name="message"
+                        class="trade-input__textarea"
+                        placeholder="取引メッセージを記入してください"
+                        required>{{ old('message', $oldMessage) }}</textarea>
                     <label for="image-upload" class="trade-input__image-btn">
                         画像を追加
                         <input type="file" id="image-upload" name="image" accept="image/jpeg,image/png" class="trade-input__image-input">

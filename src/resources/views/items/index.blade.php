@@ -20,8 +20,8 @@
             </div>
         </div>
 
-        
-    
+
+
 
         @if($items->count() > 0)
         <div class="item-index__items">
@@ -30,7 +30,11 @@
                 <a href="{{ route('items.show', $item->id) }}" class="item-card__link">
                     <div class="item-card__img">
                         @if($item->image_url)
+                        @if(str_starts_with($item->image_url, 'http'))
+                        <img src="{{ $item->image_url }}" alt="{{ $item->name }}">
+                        @else
                         <img src="{{ asset('storage/' . $item->image_url) }}" alt="{{ $item->name }}">
+                        @endif
                         @else
                         <div class="item-card__img--placeholder">画像なし</div>
                         @endif

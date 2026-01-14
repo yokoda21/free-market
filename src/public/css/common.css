@@ -191,7 +191,7 @@
 /* レスポンシブ対応（PC専用 - 1540px以下） */
 @media screen and (max-width: 1540px) {
     .header {
-        max-width: auto;
+        max-width: 1540px;
     }
 
     .header__search {

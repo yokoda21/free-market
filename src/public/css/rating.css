@@ -117,8 +117,8 @@
     background-color: #ff6b6b;
 }
 
-/* PC対応 (1400px以下) */
-@media screen and (max-width: 1400px) {
+/* PC対応 (1540px以下) */
+@media screen and (max-width: 1540px) {
     .rating-modal__content {
         width: 550px;
         height: auto;

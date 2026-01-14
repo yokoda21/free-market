@@ -259,8 +259,8 @@
     transition: background-color 0.3s ease;
 }
 
-/* レスポンシブ対応（PC専用 - 1400px対応） */
-@media (max-width: 1400px) {
+/* レスポンシブ対応（PC専用 - 1540px対応） */
+@media (max-width: 1540px) {
     .profile-container {
         padding: 0 40px;
     }
