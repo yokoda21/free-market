@@ -151,7 +151,7 @@
                 </div>
                 @endif
 
-                <form action="{{ route('trades.messages.store', $purchase->id) }}" method="POST" enctype="multipart/form-data" class="trade-input__form">
+                <form action="{{ route('trades.messages.store', $purchase->id) }}" method="POST" enctype="multipart/form-data" class="trade-input__form" novalidate>
                     @csrf
                     <textarea
                         name="message"
