@@ -23,12 +23,12 @@
             <div class="profile-rating">
                 <div class="profile-rating__stars">
                     @for($i = 1; $i <= 5; $i++)
-                        @if($i <= $user->average_rating)
+                        @if($i <=$user->average_rating)
                         <span class="star star--filled">★</span>
                         @else
-                        <span class="star">☆</span>
+                        <span class="star">★</span>
                         @endif
-                    @endfor
+                        @endfor
                 </div>
                 <span class="profile-rating__count">({{ $user->rating_count }})</span>
             </div>
@@ -52,32 +52,32 @@
                 class="tab-button {{ $page === 'trading' ? 'active' : '' }}">
                 取引中の商品
                 @php
-                    // 購入した商品（取引中 OR 取引完了だが未評価）
-                    $purchasedTradingCount = \App\Models\Item::whereHas('purchase', function($q) {
-                        $q->where('user_id', Auth::id())
-                          ->where(function($q2) {
-                              $q2->where('is_completed', false)
-                                 ->orWhere(function($q3) {
-                                     $q3->where('is_completed', true)
-                                        ->where('buyer_evaluated', false);
-                                 });
-                          });
-                    })->count();
-                    
-                    // 出品した商品（取引中 OR 取引完了だが未評価）
-                    $soldTradingCount = Auth::user()->items()->where('is_sold', true)
-                        ->whereHas('purchase', function($q) {
-                            $q->where(function($q2) {
-                                $q2->where('is_completed', false)
-                                   ->orWhere(function($q3) {
-                                       $q3->where('is_completed', true)
-                                          ->where('seller_evaluated', false);
-                                   });
-                            });
-                        })
-                        ->count();
-                    
-                    $tradingCount = $purchasedTradingCount + $soldTradingCount;
+                // 購入した商品（取引中 OR 取引完了だが未評価）
+                $purchasedTradingCount = \App\Models\Item::whereHas('purchase', function($q) {
+                $q->where('user_id', Auth::id())
+                ->where(function($q2) {
+                $q2->where('is_completed', false)
+                ->orWhere(function($q3) {
+                $q3->where('is_completed', true)
+                ->where('buyer_evaluated', false);
+                });
+                });
+                })->count();
+
+                // 出品した商品（取引中 OR 取引完了だが未評価）
+                $soldTradingCount = Auth::user()->items()->where('is_sold', true)
+                ->whereHas('purchase', function($q) {
+                $q->where(function($q2) {
+                $q2->where('is_completed', false)
+                ->orWhere(function($q3) {
+                $q3->where('is_completed', true)
+                ->where('seller_evaluated', false);
+                });
+                });
+                })
+                ->count();
+
+                $tradingCount = $purchasedTradingCount + $soldTradingCount;
                 @endphp
                 @if($tradingCount > 0)
                 <span class="tab-badge">{{ $tradingCount }}</span>
@@ -92,12 +92,12 @@
         @foreach($items as $item)
         <div class="item-card">
             @if($page === 'trading' && $item->purchase)
-                @php
-                    $unreadCount = $item->purchase->getUnreadCountFor(Auth::id());
-                @endphp
-                @if($unreadCount > 0)
-                <div class="unread-badge">{{ $unreadCount }}</div>
-                @endif
+            @php
+            $unreadCount = $item->purchase->getUnreadCountFor(Auth::id());
+            @endphp
+            @if($unreadCount > 0)
+            <div class="unread-badge">{{ $unreadCount }}</div>
+            @endif
             @endif
             <a href="{{ ($page === 'trading' && $item->purchase) ? route('trades.show', $item->purchase->id) : route('items.show', $item->id) }}" class="item-link">
                 <div class="item-image">
@@ -116,7 +116,7 @@
                     @endif
 
                 </div>
-            
+
 
                 <div class="item-info">
                     <h3 class="item-name">{{ $item->name }}</h3>

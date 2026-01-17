@@ -58,6 +58,38 @@
     padding-left: 60px;
 }
 
+/* 評価マーク */
+.profile-rating {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.profile-rating__stars {
+    display: flex;
+    gap: 0;
+}
+
+.star {
+    font-size: 40px;
+    line-height: 1;
+    color: #D9D9D9;  /* 灰色の星 */
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    text-align: center;
+}
+
+.star--filled {
+    color: #FFF048;  /* 黄色の星 */
+}
+
+.profile-rating__count {
+    font-size: 16px;
+    color: #000000;
+    font-weight: 400;
+}
+
 .edit-profile-btn {
     width: 310px;
     height: 59px;
