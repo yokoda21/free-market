@@ -160,7 +160,7 @@
                         required>{{ old('message', $oldMessage) }}</textarea>
                     <label for="image-upload" class="trade-input__image-btn">
                         画像を追加
-                        <input type="file" id="image-upload" name="image" accept="image/jpeg,image/png" class="trade-input__image-input">
+                        <input type="file" id="image-upload" name="image" class="trade-input__image-input">
                     </label>
                     <button type="submit" class="trade-input__submit">
                         <img src="{{ asset('images/send-icon.jpg') }}" alt="送信">
