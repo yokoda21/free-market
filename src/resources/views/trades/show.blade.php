@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.trade')
 
 @section('title', '取引チャット')
 
