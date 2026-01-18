@@ -266,7 +266,7 @@
         document.getElementById('message-actions-' + messageId).style.display = 'flex';
     }
 
-    // FN009: 入力情報保持機能
+    // FN009: 入力情報保持機能サイドバー遷移時も保存
     const messageInput = document.querySelector('.trade-input__textarea');
     if (messageInput) {
         window.addEventListener('beforeunload', function() {
