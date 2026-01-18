@@ -44,18 +44,23 @@
 
 .profile-name {
     width: 250px;
-    height: 65px;
+    height: 45px;
     font-family: Inter;
     font-weight: 700;
     font-size: 36px;
     line-height: 100%;
     color: #000000;
-    margin: 0;
-    flex-grow: 1;
+    padding-top: 20px;
     text-align: center;
     vertical-align: middle;
     display: flex;
-    padding-left: 60px;
+}
+
+/* ユーザー名と評価のグループ */
+.profile-user {
+    display: flex;
+    flex-direction: column;    
+    flex-grow: 1;
 }
 
 /* 評価マーク */

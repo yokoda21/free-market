@@ -18,19 +18,21 @@
                 <div class="profile-img-placeholder"></div>
                 @endif
             </div>
-            <h1 class="profile-name">{{ $user->name }}</h1>
-            @if($user->average_rating)
-            <div class="profile-rating">
-                <div class="profile-rating__stars">
-                    @for($i = 1; $i <= 5; $i++)
-                        @if($i <=$user->average_rating)
-                        <span class="star star--filled">★</span>
-                        @else
-                        <span class="star">★</span>
-                        @endif
-                        @endfor
+            <div class="profile-user">
+                <h1 class="profile-name">{{ $user->name }}</h1>
+                @if($user->average_rating)
+                <div class="profile-rating">
+                    <div class="profile-rating__stars">
+                        @for($i = 1; $i <= 5; $i++)
+                            @if($i <=$user->average_rating)
+                            <span class="star star--filled">★</span>
+                            @else
+                            <span class="star">★</span>
+                            @endif
+                            @endfor
+                    </div>
+                    <span class="profile-rating__count">({{ $user->rating_count }})</span>
                 </div>
-                <span class="profile-rating__count">({{ $user->rating_count }})</span>
             </div>
             @endif
             <a href="{{ route('user.edit-profile') }}" class="edit-profile-btn">プロフィールを編集</a>
@@ -52,35 +54,43 @@
                 class="tab-button {{ $page === 'trading' ? 'active' : '' }}">
                 取引中の商品
                 @php
-                // 購入した商品（取引中 OR 取引完了だが未評価）
-                $purchasedTradingCount = \App\Models\Item::whereHas('purchase', function($q) {
-                $q->where('user_id', Auth::id())
-                ->where(function($q2) {
-                $q2->where('is_completed', false)
-                ->orWhere(function($q3) {
-                $q3->where('is_completed', true)
+                // 購入した取引の未読メッセージ数
+                $purchasedUnreadCount = 0;
+                $purchasedTrades = \App\Models\Purchase::where('user_id', Auth::id())
+                ->where(function($q) {
+                $q->where('is_completed', false)
+                ->orWhere(function($q2) {
+                $q2->where('is_completed', true)
                 ->where('buyer_evaluated', false);
                 });
-                });
-                })->count();
+                })
+                ->get();
+                foreach($purchasedTrades as $trade) {
+                $purchasedUnreadCount += $trade->getUnreadCountFor(Auth::id());
+                }
 
-                // 出品した商品（取引中 OR 取引完了だが未評価）
-                $soldTradingCount = Auth::user()->items()->where('is_sold', true)
-                ->whereHas('purchase', function($q) {
-                $q->where(function($q2) {
-                $q2->where('is_completed', false)
-                ->orWhere(function($q3) {
-                $q3->where('is_completed', true)
+                // 出品した取引の未読メッセージ数
+                $soldUnreadCount = 0;
+                $soldTrades = \App\Models\Purchase::whereHas('item', function($q) {
+                $q->where('user_id', Auth::id())
+                ->where('is_sold', true);
+                })
+                ->where(function($q) {
+                $q->where('is_completed', false)
+                ->orWhere(function($q2) {
+                $q2->where('is_completed', true)
                 ->where('seller_evaluated', false);
                 });
-                });
                 })
-                ->count();
+                ->get();
+                foreach($soldTrades as $trade) {
+                $soldUnreadCount += $trade->getUnreadCountFor(Auth::id());
+                }
 
-                $tradingCount = $purchasedTradingCount + $soldTradingCount;
+                $unreadCount = $purchasedUnreadCount + $soldUnreadCount;
                 @endphp
-                @if($tradingCount > 0)
-                <span class="tab-badge">{{ $tradingCount }}</span>
+                @if($unreadCount > 0)
+                <span class="tab-badge">{{ $unreadCount }}</span>
                 @endif
             </a>
         </div>
