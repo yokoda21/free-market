@@ -33,8 +33,8 @@
                     </div>
                     <span class="profile-rating__count">({{ $user->rating_count }})</span>
                 </div>
+                @endif
             </div>
-            @endif
             <a href="{{ route('user.edit-profile') }}" class="edit-profile-btn">プロフィールを編集</a>
         </div>
     </div>

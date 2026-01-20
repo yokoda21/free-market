@@ -61,6 +61,8 @@
     display: flex;
     flex-direction: column;    
     flex-grow: 1;
+    min-height: 80px;  /* 評価がない場合でも高さを確保 */
+    justify-content: center;  /* 追加：縦方向中央揃え */
 }
 
 /* 評価マーク */
