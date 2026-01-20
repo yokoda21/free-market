@@ -52,6 +52,9 @@ https://dashboard.stripe.com/test/apikeys
 7. php artisan db:seed  
 8. 画像保存ディレクトリのシンボリックリンク作成  
 php artisan storage:link  
+9. ストレージディレクトリの権限設定 （権限変更しないとチャットの入力情報保持がされない場合があります）
+chmod -R 777 storage  
+chmod -R 777 bootstrap/cache
 
 ## 使用技術
 ・PHP 8.2.29
